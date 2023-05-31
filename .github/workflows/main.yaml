@@ -49,10 +49,9 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           cache-from: type=registry,ref=killruana/jtremesay.org:buildcache
           cache-to: type=registry,ref=killruana/jtremesay.org:buildcache,mode=max
-
-      # -
-      #   name: Redeploy
-      #   uses: distributhor/workflow-webhook@v3
-      #   env:
-      #     webhook_url: ${{ secrets.WEBHOOK_URL }}
-      #     verify_ssl: false
+      -
+        name: Redeploy
+        uses: distributhor/workflow-webhook@v3
+        env:
+          webhook_url: ${{ secrets.WEBHOOK_URL }}
+          verify_ssl: false
