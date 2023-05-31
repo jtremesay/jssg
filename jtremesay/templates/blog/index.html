@@ -5,4 +5,18 @@ Blog
 {% endblock %}
 
 {% block content %}
+<ul class="blog-posts">
+    {% for entry in entries %}
+    <li>
+        <span>
+            <i>
+                <time datetime="2022-01-28" pubdate="">
+                    May 20, 2022
+                </time>
+            </i>
+        </span>
+        <a href="{{ entry.url }}">{{ entry.slug }}</a>
+    </li>
+    {% endfor %}
+</ul>
 {% endblock %}
