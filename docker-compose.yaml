@@ -1,0 +1,19 @@
+version: "3.8"
+services:
+  jtremesay:
+    image: "killruana/jtremesay:main"
+    ports:
+      - "8003:8003"
+    networks:
+      - traefik_public
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.jtremesay.rule=Host(`jtremesay.org`, `slaanesh.org`)
+      - traefik.http.routers.jtremesay.entrypoints=websecure
+      - traefik.http.services.jtremesay.loadbalancer.server.port=8003
+      - traefik.http.routers.jtremesay.service=jtremesay
+      - traefik.http.routers.jtremesay.tls.certresolver=zerossl
+
+networks:
+  traefik_public:
+    external: true
