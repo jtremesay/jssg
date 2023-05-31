@@ -1,6 +1,7 @@
 from flask import (
-    Blueprint, render_template
+    Blueprint, render_template, abort
 )
+from jinja2.exceptions import TemplateNotFound
 
 bp = Blueprint('page', __name__)
 
@@ -9,4 +10,7 @@ def page(page:str=""):
     if not page or page.endswith("/"):
         page += "index"
 
-    return render_template(f"pages/{page}.html")
+    try:
+        return render_template(f"pages/{page}.html")
+    except TemplateNotFound:
+        abort(404)
