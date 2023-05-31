@@ -1,2 +1,5 @@
 **/*.pyc
 /.git
+/venv/
+/build
+**/*.egg-info/
