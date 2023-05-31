@@ -1,0 +1,22 @@
+[project]
+name = "jtremesay"
+version = "0.0.1"
+description = "My personal web site"
+authors = [
+    { name = "Jonathan Tremesaygues", email = "jonathan.tremesaygues@slaanesh.org" },
+]
+dependencies = ["flask", "hypercorn"]
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[tool.black]
+profile = "black"
+line-length = 79
+
+[tool.isort]
+profile = "black"
+
+[tool.setuptools]
+packages = ["jtremesay"]

@@ -1,0 +1,3 @@
+graft jtremesay/static
+graft jtremesay/templates
+global-exclude *.pyc

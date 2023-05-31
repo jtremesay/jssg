@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jtremesay | {{ self.title() }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='favicon-16x16.png') }}">
+</head>
+
+<body>
+
+    <main>
+        <header class="title">
+            jtremesay
+        </header>
+
+        <nav>
+            <a href="{{ url_for('page.page') }}">Home</a>
+            <a href="{{ url_for('blog.index') }}">Blog</a>
+            <a href="{{ url_for('page.page', page='resume') }}">Resume</a>
+            <a href="https://duckduckgo.com/?t=ffab&q=site%3Ajtremesay.org&ia=web">[Search]</a>
+        </nav>
+
+        <h1>{% block title %}{% endblock %}</h1>
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="bottom-footer">
+        <i>
+            Copyright © 2023 Jonathan Tremesaygues.
+            Theme stolen from <a href="https://knhash.in/jekyllBear" title="the art">jekyllBear</a> by <a
+                href="https://knhash.in" title="the artist">knhash</a>
+        </i>
+        <p>
+            This work is licensed under a
+            <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">
+                Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
+            </a>.
+            <br />
+            <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">
+                <img alt="Creative Commons License" style="border-width:0"
+                    src="{{ url_for('static', filename='cc_byncsa.png') }}" /></a>
+        </p>
+    </footer>
+</body>
+
+</html>
