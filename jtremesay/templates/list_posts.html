@@ -6,16 +6,16 @@ Blog
 
 {% block content %}
 <ul class="blog-posts">
-    {% for entry in entries %}
+    {% for post in posts %}
     <li>
         <span>
             <i>
-                <time datetime="{{ entry.year }}-{{ entry.month }}-{{ entry.day }}" pubdate="">
-                    {{ entry.year }}-{{ entry.month }}-{{ entry.day }}
+                <time datetime="{{ post.pubdate }}" pubdate="">
+                    {{ post.pubdate }}
                 </time>
             </i>
         </span>
-        <a href="{{ entry.url }}">{{ entry.slug }}</a>
+        <a href="{{ post.url }}">{{ post.title }}</a>
     </li>
     {% endfor %}
 </ul>
