@@ -1,14 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>jtremesay | {{ self.title() }}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='favicon-32x32.png') }}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='favicon-16x16.png') }}">
+    <link rel="stylesheet"
+        href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="icon" type="image/png" sizes="32x32"
+        href="{{ url_for('static', filename='favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16"
+        href="{{ url_for('static', filename='favicon-16x16.png') }}">
 </head>
 
 <body>
@@ -19,10 +22,11 @@
         </header>
 
         <nav>
-            <a href="{{ url_for('page.page') }}">Home</a>
-            <a href="{{ url_for('blog.index') }}">Blog</a>
-            <a href="{{ url_for('page.page', page='resume') }}">Resume</a>
-            <a href="https://duckduckgo.com/?t=ffab&q=site%3Ajtremesay.org&ia=web">[Search]</a>
+            <a href="{{ url_for('view_page') }}">Home</a>
+            <a href="{{ url_for('list_posts') }}">Blog</a>
+            <a href="{{ url_for('view_page', page='resume') }}">Resume</a>
+            <a
+                href="https://duckduckgo.com/?t=ffab&q=site%3Ajtremesay.org&ia=web">[Search]</a>
         </nav>
 
         <h1>{% block title %}{% endblock %}</h1>
@@ -36,21 +40,26 @@
                 Copyright © 2023 Jonathan Tremesaygues.
 
                 This work is licensed under a
-                <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">
-                    Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
+                <a rel="license"
+                    href="http://creativecommons.org/licenses/by-nc-sa/4.0/">
+                    Creative Commons Attribution-NonCommercial-ShareAlike 4.0
+                    International License
                 </a>.
                 <br />
-                <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">
+                <a rel="license"
+                    href="http://creativecommons.org/licenses/by-nc-sa/4.0/">
                     <img alt="Creative Commons License" style="border-width:0"
                         src="{{ url_for('static', filename='cc_byncsa.png') }}" />
                 </a>
-
+            </i>
         </p>
 
         <p>
             <i>
-                The code source of this site is available <a href="https://github.com/jtremesay/jtremesay.org">here</a>.
-                Theme stolen from <a href="https://knhash.in/jekyllBear" title="the art">jekyllBear</a> by <a
+                The code source of this site is available <a
+                    href="https://github.com/jtremesay/jtremesay.org">here</a>.
+                Theme stolen from <a href="https://knhash.in/jekyllBear"
+                    title="the art">jekyllBear</a> by <a
                     href="https://knhash.in" title="the artist">knhash</a>
             </i>
         </p>
