@@ -1,33 +1,40 @@
 import datetime
-import importlib
 from pathlib import Path
 import os
 import re
 
 from flask import Flask, render_template, abort, url_for, current_app
-from jinja2 import Template
 from jinja2.exceptions import TemplateNotFound
+from jinja2 import Environment, PackageLoader, select_autoescape
 
-re_post_entry = re.compile(r"(?P<year>\d{4})(?P<month>\d{2})(?P<day>\d{2})_(?P<slug>\w+)\.html")
+APP_DIR = Path(__file__).parent
 
 def get_posts_data():
-    posts_path = importlib.resources.files("jtremesay.templates.blog")
     posts = []
-    for post_entry in posts_path.iterdir():
-        if not post_entry.is_file():
-            continue
+    re_post_path = re.compile(r"(?P<year>\d{4})(?P<month>\d{2})(?P<day>\d{2})_(?P<slug>\w+)\.html")
+    env = Environment(
+        loader=PackageLoader(__name__),
+        autoescape=select_autoescape()
+    )
 
-        match = re_post_entry.match(post_entry.name)
+    # That kind of ugly, but that works.
+    # Initially, I tried to search posts with importlib.ressources,
+    # but the module is not available when running the app with hypercorn ?!
+    for post_path in APP_DIR.glob("templates/blog/*.html"):
+        match = re_post_path.match(post_path.name)
         if not match:
             continue
 
         groups = match.groupdict()
-        year = int(groups["year"])
-        month = int(groups["month"])
-        day = int(groups["day"])
+        try:
+            year = int(groups["year"])
+            month = int(groups["month"])
+            day = int(groups["day"])
+        except ValueError:
+            continue
         slug = groups["slug"]
 
-        ast = current_app.jinja_env.parse(Path(post_entry).read_text())
+        ast = env.parse(post_path.read_text())
         for node in ast.body:
             if node.__class__.__name__ == "Block" and node.name == "title":
                 title = node.body[0].nodes[0].data
@@ -39,13 +46,11 @@ def get_posts_data():
             "pubdate": datetime.date(year, month, day),
             "slug": slug,
             "title": title,
-            "url": url_for("view_post", year=year, month=month, day=day, slug=slug)
         
         }
         posts.append(post)
 
     return posts
-
 
 def create_app(test_config=None):
     # create and configure the app
@@ -62,6 +67,9 @@ def create_app(test_config=None):
         os.makedirs(app.instance_path)
     except OSError:
         pass
+    
+    # Pre-loads the posts for faster generation of posts list
+    POSTS = sorted(get_posts_data(), key=lambda k: k["pubdate"], reverse=True)
 
     @app.route("/", defaults={"page": "index"})
     @app.route("/<string:page>")
@@ -73,8 +81,7 @@ def create_app(test_config=None):
 
     @app.route("/blog/")
     def list_posts() -> str:
-        posts = get_posts_data()
-        return render_template("list_posts.html", posts=posts)
+        return render_template("list_posts.html", posts=POSTS)
 
     @app.route("/<int:year>/<int:month>/<int:day>/<slug>")
     def view_post(year: int, month: int, day: int, slug: str):

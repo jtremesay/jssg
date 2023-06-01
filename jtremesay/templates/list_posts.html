@@ -15,7 +15,8 @@ Blog
                 </time>
             </i>
         </span>
-        <a href="{{ post.url }}">{{ post.title }}</a>
+        <a href="{{ url_for('view_post', year=post.pubdate.year, month=post.pubdate.month, day=post.pubdate.day,
+            slug=post.slug) }}">{{ post.title }}</a>
     </li>
     {% endfor %}
 </ul>
