@@ -5,7 +5,7 @@ description = "My personal web site"
 authors = [
     { name = "Jonathan Tremesaygues", email = "jonathan.tremesaygues@slaanesh.org" },
 ]
-dependencies = ["flask", "hypercorn"]
+dependencies = ["flask", "hypercorn[uvloop]"]
 
 [build-system]
 requires = ["setuptools"]
