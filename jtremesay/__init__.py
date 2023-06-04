@@ -81,6 +81,12 @@ def create_app(test_config=None):
             return render_template(f"blog/{year:04}{month:02}{day:02}_{slug}.html")
         except TemplateNotFound:
             return abort(404)
+    
+    @app.route("/atom.xml")
+    def view_atom_feed():
+        return render_template(f"atom.xml", posts=POSTS), {
+            "Content-Type": "application/xml"
+        } 
 
     @app.route("/", defaults={"page": "index"})
     @app.route("/<string:page>")
