@@ -69,15 +69,7 @@ def create_app(test_config=None):
         pass
     
     # Pre-loads the posts for faster generation of posts list
-    POSTS = sorted(get_posts_data(), key=lambda k: k["pubdate"], reverse=True)
-
-    @app.route("/", defaults={"page": "index"})
-    @app.route("/<string:page>")
-    def view_page(page: str) -> str:
-        try:
-            return render_template(f"pages/{page}.html")
-        except TemplateNotFound:
-            abort(404)
+    POSTS = sorted(get_posts_data(), key=lambda k: k["pubdate"], reverse=True)  
 
     @app.route("/blog/")
     def list_posts() -> str:
@@ -89,5 +81,13 @@ def create_app(test_config=None):
             return render_template(f"blog/{year:04}{month:02}{day:02}_{slug}.html")
         except TemplateNotFound:
             return abort(404)
+
+    @app.route("/", defaults={"page": "index"})
+    @app.route("/<string:page>")
+    def view_page(page: str) -> str:
+        try:
+            return render_template(f"pages/{page}.html")
+        except TemplateNotFound:
+            abort(404)
 
     return app
