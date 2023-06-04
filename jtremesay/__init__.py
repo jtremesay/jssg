@@ -75,7 +75,7 @@ def create_app(test_config=None):
     def list_posts() -> str:
         return render_template("base/list_posts.html", posts=POSTS)
 
-    @app.route("/<int:year>/<int:month>/<int:day>/<slug>")
+    @app.route("/blog/<int:year>/<int:month>/<int:day>/<slug>")
     def view_post(year: int, month: int, day: int, slug: str):
         try:
             return render_template(f"blog/{year:04}{month:02}{day:02}_{slug}.html")
