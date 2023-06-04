@@ -7,3 +7,7 @@ build/
 
 # Environments
 venv/
+
+# Node
+/node_modules/
+/jtremesay/static/gen

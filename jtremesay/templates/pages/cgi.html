@@ -1,0 +1,15 @@
+{% extends "base/base.html" %}
+
+{% block title %}Computer-Generated Imagery{% endblock %}
+
+{% block scripts %}
+{{ super }}
+
+<script src="{{ url_for('static', filename='gen/cgi.js') }}" type="module"></script>
+{% endblock %}
+
+{% block content %}
+<p>
+    Quelques expérimentations avec la création d'images par ordinateur.
+</p>
+{% endblock %}
