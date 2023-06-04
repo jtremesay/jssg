@@ -73,7 +73,7 @@ def create_app(test_config=None):
 
     @app.route("/blog/")
     def list_posts() -> str:
-        return render_template("list_posts.html", posts=POSTS)
+        return render_template("base/list_posts.html", posts=POSTS)
 
     @app.route("/<int:year>/<int:month>/<int:day>/<slug>")
     def view_post(year: int, month: int, day: int, slug: str):
@@ -84,7 +84,7 @@ def create_app(test_config=None):
     
     @app.route("/atom.xml")
     def view_atom_feed():
-        return render_template(f"atom.xml", posts=POSTS), {
+        return render_template(f"base/atom.xml", posts=POSTS), {
             "Content-Type": "application/xml"
         } 
 
