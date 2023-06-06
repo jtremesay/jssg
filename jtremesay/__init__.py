@@ -4,7 +4,7 @@ import os
 import re
 import csv
 
-from flask import Flask, render_template, abort, url_for, current_app
+from flask import Flask, render_template, abort
 from jinja2.exceptions import TemplateNotFound
 from jinja2 import Environment, PackageLoader, select_autoescape
 
