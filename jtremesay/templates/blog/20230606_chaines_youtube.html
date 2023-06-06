@@ -1,0 +1,27 @@
+{% extends "base/base.html" %}
+
+{% block title %}Chaînes Youtube{% endblock %}
+
+{% block content %}
+<p>
+    Une sélection de chaînes Youtube dumpées de mon aggrégateur de flux.
+
+<table>
+    <thead>
+        <tr>
+            <th>Titre</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for channel in youtube_channels %}
+        <tr>
+            <td><a href="{{ channel.url}}">{{ channel.title }}</a></td>
+            <td>{{ channel.description }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+</p>
+{% endblock %}

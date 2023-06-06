@@ -2,6 +2,7 @@ import datetime
 from pathlib import Path
 import os
 import re
+import csv
 
 from flask import Flask, render_template, abort, url_for, current_app
 from jinja2.exceptions import TemplateNotFound
@@ -52,6 +53,11 @@ def get_posts_data():
 
     return posts
 
+def get_youtube_channels() -> dict[str, str]:
+    with (APP_DIR / "static" / "files" / "youtube_channels.csv").open() as f:
+        reader = csv.DictReader(f)
+        return list(reader)
+
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
@@ -70,6 +76,7 @@ def create_app(test_config=None):
     
     # Pre-loads the posts for faster generation of posts list
     POSTS = sorted(get_posts_data(), key=lambda k: k["pubdate"], reverse=True)  
+    YOUTUBE_CHANNELS = get_youtube_channels()
 
     @app.route("/blog/")
     def list_posts() -> str:
@@ -77,8 +84,11 @@ def create_app(test_config=None):
 
     @app.route("/blog/<int:year>/<int:month>/<int:day>/<slug>")
     def view_post(year: int, month: int, day: int, slug: str):
+        ctx = {}
+        ctx["youtube_channels"] = YOUTUBE_CHANNELS
+
         try:
-            return render_template(f"blog/{year:04}{month:02}{day:02}_{slug}.html")
+            return render_template(f"blog/{year:04}{month:02}{day:02}_{slug}.html", **ctx)
         except TemplateNotFound:
             return abort(404)
     
