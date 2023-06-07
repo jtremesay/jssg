@@ -2,10 +2,8 @@ version: "3.8"
 services:
   jtremesay:
     image: "killruana/jtremesay.org:main"
-    environment:
-      - "NGINX_PORT=8003"
     ports:
-      - "8003:8003"
+      - "8003:80"
     networks:
       - "traefik_public"
     labels:
