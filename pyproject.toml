@@ -1,15 +1,18 @@
 [project]
-name = "jtremesay"
+name = "yassg"
 version = "0.0.1"
-description = "My personal web site"
+description = "Yet another static site generator"
 authors = [
     { name = "Jonathan Tremesaygues", email = "jonathan.tremesaygues@slaanesh.org" },
 ]
-dependencies = ["flask", "hypercorn[uvloop]"]
+dependencies = ["Jinja2"]
 
 [build-system]
 requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
+
+[project.scripts]
+yassg = "yassg:main"
 
 [tool.black]
 profile = "black"
@@ -19,4 +22,4 @@ line-length = 79
 profile = "black"
 
 [tool.setuptools]
-packages = ["jtremesay"]
+packages = ["yassg"]
