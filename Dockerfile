@@ -1,11 +1,3 @@
-FROM node:lts AS frontend
-WORKDIR /opt/jtremesay
-COPY package.json package-lock.json ./
-RUN npm install
-COPY tsconfig.json vite.config.ts ./
-COPY front front
-RUN npm run build
-
 FROM python AS yassg
 RUN pip install build
 WORKDIR /opt/jtremesay
@@ -14,14 +6,18 @@ COPY yassg yassg
 RUN python -m build --wheel
 
 FROM python AS site
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && apt-get install -y nodejs
+WORKDIR /opt/jtremesay
+COPY package.json package-lock.json ./
+RUN npm install
 COPY --from=yassg /opt/jtremesay/dist/yassg-*.whl /tmp/
 RUN pip install /tmp/yassg-*.whl
 WORKDIR /opt/jtremesay
-COPY Makefile ./
+COPY Makefile tsconfig.json vite.config.ts ./
 COPY theme theme
 COPY static static
+COPY front front
 COPY content content
-COPY --from=frontend /opt/jtremesay/out/static/gen out/static/gen
 RUN make
 
 FROM nginx AS serve
