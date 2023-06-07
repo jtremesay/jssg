@@ -5,9 +5,9 @@ import { defineConfig } from 'vite'
 export default defineConfig({
   build: {
     rollupOptions: {
-      input: globSync("src/entrypoints/**/*.ts"),
+      input: globSync("front/main/**/*.ts"),
       output: {
-        dir: "jtremesay/static/gen/",
+        dir: "static/gen/",
         entryFileNames: "[name].js"
       }
     }

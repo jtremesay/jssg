@@ -5,22 +5,21 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <base href="/">
     <title>jtremesay | {{ self.title() }}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='favicon-32x32.png') }}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='favicon-16x16.png') }}">
-    <link href="{{ url_for('view_atom_feed') }}" type="application/atom+xml" rel="alternate" title="jtremesay.org Atom feed" />
+    <link rel="stylesheet" href="/static/css/main.css">
+    <link rel="icon" type="image/png" sizes="32x32" href="static/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="static/images/favicon-16x16.png">
+    <link href="/atom.xml" type="application/atom+xml" rel="alternate" title="jtremesay.org Atom feed" />
     {% block scripts %}{% endblock %}
 </head>
 
 <body>
 
     <main>
-        <header class="title">
-            jtremesay
-        </header>
+        <header class="title">jtremesay</header>
 
-        {% include "base/menu.html" %}
+        {% include "theme/menu.html" %}
 
         <h1>{% block title %}{% endblock %}</h1>
 
@@ -39,7 +38,7 @@
                 </a>.
                 <br />
                 <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">
-                    <img alt="Creative Commons License" style="border-width:0" src="{{ url_for('static', filename='cc_byncsa.png') }}" />
+                    <img alt="Creative Commons License" style="border-width:0" src="static/images/cc_byncsa.png" />
                 </a>
             </i>
         </p>

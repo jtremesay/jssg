@@ -1,8 +1,6 @@
-{% extends "base/base.html" %}
+{% extends "theme/base.html" %}
 
-{% block title %}
-Blog
-{% endblock %}
+{% block title %}Blog{% endblock %}
 
 {% block content %}
 <ul class="blog-posts">
@@ -15,8 +13,7 @@ Blog
                 </time>
             </i>
         </span>
-        <a href="{{ url_for('view_post', year=post.pubdate.year, month=post.pubdate.month, day=post.pubdate.day,
-            slug=post.slug) }}">{{ post.title }}</a>
+        <a href="/blog/{{ post.pubdate.year }}/{{ post.pubdate.month }}/{{ post.pubdate.day }}/{{ post.slug }}">{{ post.title }}</a>
     </li>
     {% endfor %}
 </ul>

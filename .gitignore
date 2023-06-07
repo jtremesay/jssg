@@ -11,3 +11,6 @@ venv/
 # Node
 /node_modules/
 /jtremesay/static/gen
+
+# Generated site
+/out/
