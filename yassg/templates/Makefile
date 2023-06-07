@@ -13,14 +13,14 @@ out:
 out/static: static out
 	cp -a $< $@
 
-out/favicon.ico: out/static/images/favicon.ico out
-	cp $< $@
+out/favicon.ico: out/static
+	cp $</images/favicon.ico $@
 
 out/atom.xml:{%for post in posts %} \
 	content/blog/{{ post.pubdate.__format__('%Y%m%d') }}_{{ post.slug}}.html{% endfor %}
 	python -m yassg renderatomfeed -o $@ $^
 
-out/static/gen:
+out/static/gen: out/static
 	npm run build
 
 out/blog/index.html:{%for post in posts %} \

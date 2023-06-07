@@ -19,7 +19,7 @@ COPY static static
 COPY front front
 COPY content content
 RUN yassg configure
-RUN make
+RUN make -j8
 
 FROM nginx AS serve
 COPY --from=site /opt/jtremesay/out /usr/share/nginx/html
