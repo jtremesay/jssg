@@ -42,7 +42,6 @@ out/%.html: content/%.html
 	python -m yassg renderpage -o $@ $^
 
 clean:
-	$(RM) -rf \
-		out
+	$(RM) -rf out
 
 .PHONY: all clean
