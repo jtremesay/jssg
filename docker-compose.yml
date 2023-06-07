@@ -3,7 +3,7 @@ services:
   jtremesay:
     image: "killruana/jtremesay.org:main"
     ports:
-      - "8003:8003"
+      - "8003:80"
     networks:
       - traefik_public
     labels:
