@@ -1,5 +1,6 @@
 all: \
 	out/static \
+	out/static/gen \
 	out/index.html \
 	out/cgi.html \
 	out/cv.html \
@@ -12,6 +13,9 @@ out:
 
 out/static: static out
 	cp -a $< $@
+
+out/static/gen: out/static
+	npm run build
 
 out/blog/index.html: \
 	content/blog/20230531_helloworld.html \
