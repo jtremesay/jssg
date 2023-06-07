@@ -13,7 +13,7 @@ out:
 out/static: static out
 	cp -a $< $@
 
-out/favicon.ico: out/static/images/favicon.ico
+out/favicon.ico: out/static/images/favicon.ico out
 	cp $< $@
 
 out/atom.xml:{%for post in posts %} \
@@ -30,7 +30,7 @@ out/blog/index.html:{%for post in posts %} \
 out/blog/{{ post.pubdate.__format__('%Y/%m/%d') }}/{{ post.slug }}.html: content/blog/{{ post.pubdate.__format__('%Y%m%d') }}_{{ post.slug}}.html
 	python -m yassg renderpost -o $@ $<
 {% endfor %}{% for page in pages %}
-out/{{ page }}.html: content/{{ page }}.html
+out/{{ page }}: content/{{ page }}
 	python -m yassg renderpage -o $@ $^
 {% endfor %}
 clean:
