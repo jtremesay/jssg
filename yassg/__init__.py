@@ -30,22 +30,9 @@ def read_csv(path: str, dict=True):
 
 env.filters["read_csv"] = read_csv
 
-def cmd_render_post(args):
-    tpl = env.get_template(str(args.post))
-    ctx = {
-        "url_for": url_for
-    }
-
-    output_dir = args.output.parent
-    output_dir.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(tpl.render(ctx))
-
 def get_posts(posts_paths: Sequence[Path]):
     posts = []
     for post_path in posts_paths:
-        tpl = env.parse(post_path.read_text())
-        print(post_path.name)
-
         match = re_post_path.match(post_path.name)
         if not match:
             continue
@@ -76,6 +63,26 @@ def get_posts(posts_paths: Sequence[Path]):
     
     return posts
 
+def cmd_configure(args):
+    posts = get_posts((args.content / "blog").glob("**/*.html"))
+    pages = list(filter(lambda p: not str(p).startswith("blog/"), map(lambda p: p.relative_to(args.content), (args.content).glob("**/*.html"))))
+    tpl = env.get_template("yassg/Makefile")
+    ctx = {
+        "url_for": url_for,
+        "posts": posts,
+        "pages": pages
+    }
+    (Path() / "Makefile").write_text(tpl.render(ctx))
+
+def cmd_render_post(args):
+    tpl = env.get_template(str(args.post))
+    ctx = {
+        "url_for": url_for
+    }
+
+    output_dir = args.output.parent
+    output_dir.mkdir(parents=True, exist_ok=True)
+    args.output.write_text(tpl.render(ctx))
 
 def cmd_render_blog_index(args):
     posts = get_posts(args.posts)
@@ -107,7 +114,6 @@ def cmd_render_atomfeed(args):
     args.output.write_text(tpl.render(ctx))
 
 def cmd_render_page(args):
-    print(args)
     tpl = env.get_template(str(args.page))
     ctx = {
         "url_for": url_for
@@ -124,6 +130,9 @@ def main(args: Optional[Sequence[str]]=None):
     parser.add_argument("-t", "--theme", type=Path, default=Path() / "theme")
 
     subparsers = parser.add_subparsers()
+
+    configure_parser = subparsers.add_parser("configure")
+    configure_parser.set_defaults(func=cmd_configure)
 
     renderpost_parser = subparsers.add_parser("renderpost")
     renderpost_parser.add_argument("--output", "-o", type=Path, default=Path("/dev/stdout"))

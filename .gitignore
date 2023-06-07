@@ -13,4 +13,5 @@ venv/
 /node_modules/
 
 # Generated site
+/Makefile
 /out/
