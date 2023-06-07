@@ -14,7 +14,7 @@ out:
 out/static: static out
 	cp -a $< $@
 
-out/static/gen: out/static
+out/static/gen:
 	npm run build
 
 out/blog/index.html: \
