@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <feed xmlns="http://www.w3.org/2005/Atom">
-
 	<title>jtremesay</title>
 	<subtitle>Jtremesay's atom feed</subtitle>
-	<link href="https://jtremesay.org{{ url_for('view_atom_feed') }}" rel="self" />
+	<link href="https://jtremesay.org/atom.xml" rel="self" />
 	<link href="https://jtremesay.org" />
 	<updated>{{ posts[0].pubdate }}T00:00:00Z</updated>
 
 	{% for post in posts %}
 	<entry>
 		<title>{{ post.title }} </title>
-		<link href="https://jtremesay.org{{ url_for('view_post', year=post.pubdate.year, month=post.pubdate.month, day=post.pubdate.day,
-            slug=post.slug) }}" />
+		<link href="https://jtremesay.org/blog/{{ post.pubdate.__format__('%Y/%m/%d') }}/{{ post.slug }}.html" />
         <published>{{ post.pubdate }}T00:00:00Z</published>
 		<author>
 			<name>Jonathan Tremesaygues</name>

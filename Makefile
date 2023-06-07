@@ -1,6 +1,7 @@
 all: \
 	out/static \
 	out/static/gen \
+	out/atom.xml \
 	out/index.html \
 	out/cgi.html \
 	out/cv.html \
@@ -13,6 +14,11 @@ out:
 
 out/static: static out
 	cp -a $< $@
+
+out/atom.xml: \
+	content/blog/20230531_helloworld.html \
+	content/blog/20230606_chaines_youtube.html
+	python -m yassg renderatomfeed -o $@ $^
 
 out/static/gen:
 	npm run build

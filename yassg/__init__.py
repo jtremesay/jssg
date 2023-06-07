@@ -91,6 +91,21 @@ def cmd_render_blog_index(args):
     output_dir.mkdir(parents=True, exist_ok=True)
     args.output.write_text(tpl.render(ctx))
 
+def cmd_render_atomfeed(args):
+    posts = get_posts(args.posts)
+    posts.sort(key=lambda o: o["pubdate"], reverse=True)
+    posts = posts[:20]
+
+    tpl = env.get_template("theme/atom.xml")
+    ctx = {
+        "url_for": url_for,
+        "posts": posts
+    }
+
+    output_dir = args.output.parent
+    output_dir.mkdir(parents=True, exist_ok=True)
+    args.output.write_text(tpl.render(ctx))
+
 def cmd_render_page(args):
     print(args)
     tpl = env.get_template(str(args.page))
@@ -120,11 +135,15 @@ def main(args: Optional[Sequence[str]]=None):
     renderblogindex_parser.add_argument("posts", nargs="*", type=Path)
     renderblogindex_parser.set_defaults(func=cmd_render_blog_index)
 
+    renderatomfeed_parser = subparsers.add_parser("renderatomfeed")
+    renderatomfeed_parser.add_argument("--output", "-o", type=Path, default=Path("/dev/stdout"))
+    renderatomfeed_parser.add_argument("posts", nargs="*", type=Path)
+    renderatomfeed_parser.set_defaults(func=cmd_render_atomfeed)
+
     renderpage_parser = subparsers.add_parser("renderpage")
     renderpage_parser.add_argument("--output", "-o", type=Path, default=Path("/dev/stdout"))
     renderpage_parser.add_argument("page", type=Path)
     renderpage_parser.set_defaults(func=cmd_render_page)
-
 
     args = parser.parse_args(args)
     env.loader.mapping["content"] = FileSystemLoader(args.content)
