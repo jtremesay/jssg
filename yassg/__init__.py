@@ -130,5 +130,5 @@ def main(args: Optional[Sequence[str]]=None):
     env.loader.mapping["content"] = FileSystemLoader(args.content)
     env.loader.mapping["theme"] = FileSystemLoader(args.theme)
 
-    if func := args.func:
+    if func := getattr(args, "func", None):
         func(args)
