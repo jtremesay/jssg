@@ -1,7 +1,8 @@
-**/*.pyc
-/.git
-/venv/
-/build
-/node_modules
-/jtremesay/static/gen
 **/*.egg-info/
+**/*.pyc
+/.git/
+/.vscode/
+/build/
+/dist/
+/node_modules/
+/venv/
