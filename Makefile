@@ -1,5 +1,6 @@
 all: \
 	out/static \
+	out/favicon.ico \
 	out/static/gen \
 	out/atom.xml \
 	out/index.html \
@@ -14,6 +15,9 @@ out:
 
 out/static: static out
 	cp -a $< $@
+
+out/favicon.ico: out/static/images/favicon.ico
+	cp $< $@
 
 out/atom.xml: \
 	content/blog/20230531_helloworld.html \
