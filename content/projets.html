@@ -1,0 +1,38 @@
+{% extends "theme/base.html" %}
+
+{% block title %}Projets{% endblock %}
+
+{% block content %}
+<p>
+    Quelque uns de mes projets
+</p>
+<ul>
+    <li>
+        <a href="https://raycaster.jtremesay.org/">
+            Raycaster
+        </a>
+        (<a href="https://github.com/jtremesay/raycaster">sources</a>) : Un raycaster façon Wolfenstein3D en vanilla typescript. Rendu en WebGL et SVG parce que pourquoi pas ? Le tout en 400 lignes de code.
+    </li>
+    <li>
+        <a href="https://github.com/jtremesay/raytracer">
+            Raytracer
+        </a> : Itération suivante, un raytraceur en rust.
+    </li>
+    <li>
+        <a href="https://mathsworld.jtremesay.org/">
+            Mathsworld
+        </a>
+        (<a href="https://github.com/jtremesay/mathsworld">sources</a>) : Le next level du projet précédent : un générateur de shader WebGL raytraçant une scène décrite en s-expression
+    </li>
+    <li>
+        <a href="https://github.com/jtremesay/kfpga">
+            kFPGA
+        </a> : une architecture FPGA opensource (openhardware?).
+    </li>
+    <li>
+        <a href="https://github.com/jtremesay/mpssim">
+            MPS
+        </a> Un processor MIPS 8 bits.
+    </li>
+</ul>
+{% endblock %}
