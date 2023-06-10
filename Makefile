@@ -47,6 +47,9 @@ help:
 front:
 	npm run build
 
+fragments:
+	$(MAKE) -C fragments
+
 html:
 	"$(PELICAN)" "$(INPUTDIR)" -o "$(OUTPUTDIR)" -s "$(CONFFILE)" $(PELICANOPTS)
 
@@ -72,4 +75,4 @@ publish:
 	"$(PELICAN)" "$(INPUTDIR)" -o "$(OUTPUTDIR)" -s "$(PUBLISHCONF)" $(PELICANOPTS)
 
 
-.PHONY: front html help clean regenerate serve serve-global devserver publish 
+.PHONY: front fragments html help clean regenerate serve serve-global devserver publish 
