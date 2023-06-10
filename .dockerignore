@@ -1,9 +1,6 @@
 **/*.egg-info/
-**/*.pyc
 /.git/
 /.vscode/
-/build/
-/dist/
+/output/
 /node_modules/
 /venv/
-/Makefile

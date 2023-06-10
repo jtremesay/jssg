@@ -1,25 +1,23 @@
-FROM python AS yassg
-RUN pip install build
-WORKDIR /opt/jtremesay
-COPY pyproject.toml MANIFEST.in ./
-COPY yassg yassg
-RUN python -m build --wheel
-
-FROM python AS site
-RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && apt-get install -y nodejs
+FROM node:lts AS front
 WORKDIR /opt/jtremesay
 COPY package.json package-lock.json ./
 RUN npm install
-COPY --from=yassg /opt/jtremesay/dist/yassg-*.whl /tmp/
-RUN pip install /tmp/yassg-*.whl
-WORKDIR /opt/jtremesay
-COPY tsconfig.json vite.config.ts ./
-COPY theme theme
-COPY static static
+COPY Makefile tsconfig.json vite.config.ts ./
 COPY front front
+RUN make front
+
+
+FROM python AS site
+RUN pip install -U pip setuptools wheel
+WORKDIR /opt/jtremesay
+COPY requirements.txt ./
+RUN pip install -Ur requirements.txt
+COPY pelicanconf.py publishconf.py Makefile ./
+COPY theme theme
 COPY content content
-RUN yassg configure
-RUN make -j8
+COPY --from=front /opt/jtremesay/content/static/gen ./content/static/gen 
+RUN make publish
+
 
 FROM nginx AS serve
-COPY --from=site /opt/jtremesay/out /usr/share/nginx/html
+COPY --from=site /opt/jtremesay/output /usr/share/nginx/html
