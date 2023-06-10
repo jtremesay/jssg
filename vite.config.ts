@@ -7,7 +7,7 @@ export default defineConfig({
     rollupOptions: {
       input: globSync("front/main/**/*.ts"),
       output: {
-        dir: "out/static/gen/",
+        dir: "content/static/gen/",
         entryFileNames: "[name].js"
       }
     }
