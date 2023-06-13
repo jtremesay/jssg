@@ -13,11 +13,10 @@ WORKDIR /opt/jtremesay
 COPY requirements.txt ./
 RUN pip install -Ur requirements.txt
 COPY pelicanconf.py publishconf.py Makefile ./
+COPY filters filters
 COPY theme theme
-COPY fragments fragments
 COPY content content
 COPY --from=front /opt/jtremesay/content/static/gen ./content/static/gen 
-RUN make fragments
 RUN make publish
 
 

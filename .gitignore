@@ -14,5 +14,4 @@ venv/
 /content/static/gen/
 
 # Generated site
-/fragments/*.html
 /output/
