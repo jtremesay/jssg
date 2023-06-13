@@ -1,3 +1,13 @@
+try:
+    import filters
+except ImportError:
+    from pathlib import Path
+    import sys
+
+    sys.path.insert(0, str(Path(__file__).parent.resolve()))
+    import filters
+
+
 AUTHOR = "Jonathan Tremesaygues"
 SITENAME = "jtremesay.org"
 SITEURL = ""
@@ -10,6 +20,9 @@ DEFAULT_LANG = "fr"
 
 STATIC_PATHS = ["static"]
 THEME = "theme"
+PLUGINS = ["jinja2content"]
+JINJA_FILTERS = {"read_csv": filters.read_csv}
+
 
 # Feed generation is usually not desired when developing
 FEED_ALL_ATOM = None

@@ -16,6 +16,7 @@ Un post ressemble à ça :
 
 .. code-block:: html
 
+    {% raw %}
     {% extends "base.html" %}
 
     {% block title %}Hello, world{% endblock %}
