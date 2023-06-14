@@ -2,6 +2,6 @@
 
 {% block content %}
 <h1>{{ article.title }} <a href="{{ article.url }}">#</a></h1>
-
+<i>{{ article.date.strftime("%Y-%m-%d %H:%M") }}</i>
 {{ article.content }}
 {% endblock %}
