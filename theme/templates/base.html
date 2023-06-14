@@ -39,6 +39,7 @@
 
 <body>
     <header>{{ SITENAME }}</header>
+
     <nav>
         <a href="{{ SITEURL }}/">Blog</a>
         <a href="{{ SITEURL }}/pages/projets.html">Projets</a>
@@ -46,6 +47,8 @@
         <a href="{{ SITEURL }}/pages/cv-en.html">CV</a>
         <a href="{{ SITEURL }}/pages/about.html">About</a>
         <a href="https://duckduckgo.com/?t=ffab&q=site%3Ajtremesay.org&ia=web">[Search]</a>
+        <a href="{{ FEED_DOMAIN }}/{% if FEED_ALL_ATOM_URL %}{{ FEED_ALL_ATOM_URL }}{% else %}{{ FEED_ALL_ATOM }}{% endif %}">Flux Atom</a>
+
     </nav>
 
     <main>
