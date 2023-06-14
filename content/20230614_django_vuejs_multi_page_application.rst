@@ -1,7 +1,7 @@
 Django + VueJS - MultiPage Application
 ######################################
 
-:date: 2023-06-14 19:00
+:date: 2023-06-14 20:00
 
 Parce que j'ai passé beaucoup trop de temps à faire tomber ça en marche, je partage ici le résultat de mes expérimentations.
 
