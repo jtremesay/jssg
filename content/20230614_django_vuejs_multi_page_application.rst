@@ -235,8 +235,6 @@ Les modifications à appliquer à Django sont minimales. Il vous suffit d'abord 
         ("front", BASE_DIR / "out" / "front"),
     ]
 
-À partir de là, le dossier ``out/front``
-
 Vous pouvez maintenant importer le javascript dans votre template :
 
 .. code-block:: html
