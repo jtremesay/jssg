@@ -81,7 +81,7 @@ Intéressons nous tout d'abord à la partie front.
         "type": "module",
         "scripts": {
             "dev": "vite build --watch -m dev",
-            "build": "vite build"
+            "build": "tsc && vite build"
         },
         "dependencies": {
         },
@@ -244,7 +244,7 @@ Vous pouvez maintenant importer le javascript dans votre template :
     {% extends "myapp/base.html" %}
 
     {% block content %}
-        <script src="{% static 'front/ma_page.js' %}" module></script>
+        <script src="{% static 'front/ma_page.js' %}" type="module"></script>
         <link rel="stylesheet" type="text/css" href="{% static 'front/assets/ma_page.css' %}" />
   
         <div id="ma_page" data-api-url="{% url 'app:api.json' %}"></div>
