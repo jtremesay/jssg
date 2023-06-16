@@ -15,6 +15,7 @@ RUN pip install -Ur requirements.txt
 COPY pelicanconf.py publishconf.py Makefile ./
 COPY filters filters
 COPY theme theme
+COPY tstheme tstheme
 COPY content content
 COPY --from=front /opt/jtremesay/content/static/gen ./content/static/gen 
 RUN make publish
