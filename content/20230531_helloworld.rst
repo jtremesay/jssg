@@ -9,9 +9,6 @@ Je veux un truc simple. J'écris mon contenu dans mon éditeur de texte préfér
 
 Du coup, voila ma solution, pas du tout `sur-ingénieurée <https://xeiaso.net/talks/how-my-website-works>`_. Le contenu écrit sous forme de templates Jinja, et servi par une app Flask maison. Comme tout est sous forme de template, je peux écrire mes articles depuis le comfort de mon éditeur de texte, tout en ayant une bonne séparations entre la partie contenu et la partie présentation.
 
-Test
-====
-
 Un post ressemble à ça :
 
 .. code-block:: html

@@ -3,11 +3,14 @@ Django + VueJS - MultiPage Application
 
 :date: 2023-06-14 20:00
 
+Préambule
+=========
+
 Parce que j'ai passé beaucoup trop de temps à faire tomber ça en marche, je partage ici le résultat de mes expérimentations.
 
 Contexte: j'ai fait un peu de dev front au début des années 2010. À l'époque, c'était simple. Jquery, quelques fichiers javascript inclus dans la page, et roulez jeunesse.
 
-.. code-block:: shell
+.. code-block:: console
 
     $ tree oldschool/
     oldschool/
@@ -39,6 +42,9 @@ Contexte: j'ai fait un peu de dev front au début des années 2010. À l'époque
 
 Ça fini immanquablement par devenir du code spaghetti, mais le coût d'entrée est pour ainsi dire nul. C'est à la portée du premier crétin venu. Cf moi.
 
+La problématique
+================
+
 Nous voila en 2023. Au cours de cette décennie écoulée, j'ai fait assez peu de dev web, et je n'ai pas DU TOUT suivi les évolutions du domaine. Au taf, on a une webapp django dont le frontend est géré à l'ancienne : HTML généré par les templates Django et Vanilla JS inclut à l'ancienne.
 
 Ça commence à devenir assez gros et bordélique. Je voudrais faire du ménage dans tout ça, et moderniser. Au moins ajouter TypeScript pour profiter du typage statique et de la compilation pour détecter et corriger aux plus tôt les petites erreurs d'inattention à la con et de profiter de l'intelligence de l'IDE. NPM serait aussi un plus pour simplifier les mises à jours de nos dépendances. Puis peut-être expérimenter avec des framework UI tel que vuejs pour voir si ça peut nous simplifier la vie pour certain éléments de l'interface.
@@ -55,9 +61,12 @@ Après beaucoup trop de prises de tête, de crises de nerfs, d'expérimetations,
 
 La solution est d'utiliser vitejs en mode MultiPage Application, de découvrir dynamiquement vos différents points d'entrées, et demander à Django de servir en tant que static le dossier contenant le résultat de la compilation.
 
+Le front
+========
+
 Intéressons nous tout d'abord à la partie front.
 
-.. code-block:: shell
+.. code-block:: console
 
     $ tree djangovuejs
     djangovuejs
@@ -169,7 +178,7 @@ Pour plus de détail, la doc est votre amie :
 
 Nous pouvons maintenant installer les dépendances et compiler le différents points d'entrées :
 
-.. code-block:: shell
+.. code-block:: console
 
     $ cd djangovuejs/
 
@@ -213,7 +222,7 @@ Le sous dossier ``chunks`` contient les morceaux de codes qui sont communs à vo
 
 Vous pouvez aussi compiler le code à la demande quand vous éditer un fichier avec la commande suivante :
 
-.. code-block:: shell
+.. code-block:: console
 
     $  npm run dev
 
@@ -224,6 +233,8 @@ Vous pouvez aussi compiler le code à la demande quand vous éditer un fichier a
 
     watching for file changes...
 
+Django
+======
 
 Les modifications à appliquer à Django sont minimales. Il vous suffit d'abord de définir la variable ``STATICFILES_DIRS`` de votre ``proj/settings.py`` :
 
@@ -251,9 +262,12 @@ Vous pouvez maintenant importer le javascript dans votre template :
     {% endblock %}
     {% endraw %}
 
+Conclusion
+==========
+
 Le dev web s'est quand même sacrément complexifié aux cours des 10 dernières années :-/
 
-.. code-block:: shell
+.. code-block:: console
 
     $ tree oldschool
     oldschool
@@ -267,7 +281,7 @@ Le dev web s'est quand même sacrément complexifié aux cours des 10 dernières
 
     2 directories, 6 files
 
-.. code-block:: shell
+.. code-block:: console
 
     $ djangovuejs
     ├── front
