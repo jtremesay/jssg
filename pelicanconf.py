@@ -19,7 +19,7 @@ TIMEZONE = "Europe/Paris"
 DEFAULT_LANG = "fr"
 
 STATIC_PATHS = ["static"]
-THEME = "theme"
+THEME = "tstheme"
 PLUGINS = ["jinja2content"]
 JINJA_FILTERS = {"read_csv": filters.read_csv}
 

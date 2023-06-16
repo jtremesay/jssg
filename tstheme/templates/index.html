@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<section>
+    <h1>Blog</h1>
+    <article>
+        <ul>
+            {% for article in articles_page.object_list %}
+            <li>
+                <span class="publication-date"><time datetime="{{ article.date.isoformat() }}">{{ article.date.strftime("%Y-%m-%d") }}</time></span>
+                <a href="{{ article.url }}">{{ article.title }}</a>
+            </li>
+            {% endfor %}
+        </ul>
+    </article>
+</section>
+{% endblock %}
