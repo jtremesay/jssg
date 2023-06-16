@@ -1,7 +1,9 @@
 :root {
     --text-color: #fff;
     --link-color: #719af4;
+    --border-color: #444;
     --background-color: #262626;
+    --background-color-minor: #343434;
     --code-background-color: #000;
     --raised-background-color: #313131;
     --header-background-color: #3178c6;
@@ -111,4 +113,13 @@ footer {
     padding: 1rem;
     margin-top: 3rem;
     font-size: 1.4rem;
+}
+
+td {
+    border-top: 1px solid var(--border-color);
+    padding: 1rem 1rem;
+}
+
+tr:nth-child(2n) {
+    background-color: var(--background-color-minor);
 }
