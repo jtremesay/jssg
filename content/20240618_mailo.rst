@@ -54,6 +54,8 @@ Accéder à « Mailo Space » par l’icône aux trois bonhommes dans la barre
 
 Créez un nouvel espace. J'ai choisi un espace familial mais j'aurai probablement du prendre un espace pro ou asso. Tant pis. Ça n'a pas l'air de changer grand choses, et comme j'ai la flemme de me retaper la config, ça va rester ainsi.
 
+Edit: en fait si, ça change des trucs. L'espace familiale coûte 2€/mois et offre 5 comptes premiums (+nombre illimités de comptes gratuits).
+
 Une fois l'espace créer, aller dans ``Management -> Declare a domain name``.
 
 Mailo va vous donner un champs ``TXT`` à ajouter à votre domaine pour prouver que vous en êtes le propriétaire.
