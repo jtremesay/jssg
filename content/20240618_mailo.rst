@@ -85,7 +85,7 @@ Mailo a l'air de fournir tout ce qu'il faut pour migrer les anciens mails depuis
     --host1 mail.gandi.net \
     --user1 camille@slaanesh.org \
     --password1  "secret1" \
-    --host2 mail.gandi.net \
+    --host2 mail.mailo.com \
     --user2  camille@slaanesh.org \
     --password2  "secret2"
 
