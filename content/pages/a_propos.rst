@@ -17,6 +17,6 @@ J'aime bien comprendre comment marchent les trucs et essayer de les reproduire d
 Contact
 -------
 
-Vous pouvez m'envoyer un `e-mail <mailto:jonathan.tremesaygues+contact@slaanesh.org>`_. Je réponds selon ma motivation, mais promis, je fini par tout lire !
+Vous pouvez m'envoyer un `e-mail <mailto:jonathan.tremesaygues++contact@slaanesh.org>`_. Je réponds selon ma motivation, mais promis, je fini par tout lire !
 
 Solidairement, Jo

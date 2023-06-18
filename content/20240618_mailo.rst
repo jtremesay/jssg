@@ -56,7 +56,7 @@ Créez un nouvel espace. J'ai choisi un espace familial mais j'aurai probablemen
 
 Edit: en fait si, ça change des trucs. L'espace familiale coûte 2€/mois et offre 5 comptes premiums (+nombre illimités de comptes gratuits).
 
-Une fois l'espace créer, aller dans ``Management -> Declare a domain name``.
+FUne fois l'espace créer, aller dans ``Management -> Declare a domain name``.
 
 Mailo va vous donner un champs ``TXT`` à ajouter à votre domaine pour prouver que vous en êtes le propriétaire.
 

@@ -9,7 +9,7 @@ Software engineer based at Montpellier, France
 Contact
 =======
 
-- `Email <mailto:jonathan.tremesaygues+job@slaanesh.org>`_
+- `Email <mailto:jonathan.tremesaygues++job@slaanesh.org>`_
 
 Natural languages
 =================
