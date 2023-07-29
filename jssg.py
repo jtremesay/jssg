@@ -10,21 +10,15 @@ from typing import Any, Generator, Iterable, Optional
 from urllib.parse import urlparse
 
 from docutils.core import publish_parts
-from jinja2 import Environment, PackageLoader, Template, select_autoescape
+from jinja2 import Environment, FileSystemLoader, Template, select_autoescape
 from jinja2.environment import Environment
 from unidecode import unidecode
 
 logger = logging.getLogger(__name__)
-env = Environment(loader=PackageLoader("jssg"), autoescape=select_autoescape())
 
 
 def docutils_filter(value: str) -> str:
-    return publish_parts(
-        value, writer_name="html5", settings_overrides={"section_self_link": True}
-    )["body"]
-
-
-env.filters["docutils"] = docutils_filter
+    return publish_parts(value, writer_name="html5")["body"]
 
 
 def slugify(title: str) -> str:
@@ -187,15 +181,15 @@ def render_template(tpl: Template, ctx: dict[str, Any], config: Config) -> str:
     return tpl.render(ctx)
 
 
-def render_page(page: Post, config: Config) -> str:
+def render_page(page: Page, env: Environment, config: Config) -> str:
     return render_template(env.get_template("page.html"), {"page": page}, config)
 
 
-def render_post(post: Post, config: Config) -> str:
+def render_post(post: Post, env: Environment, config: Config) -> str:
     return render_template(env.get_template("post.html"), {"post": post}, config)
 
 
-def render_index(posts: Iterable[Post], config: Config) -> str:
+def render_index(posts: Iterable[Post], env: Environment, config: Config) -> str:
     return render_template(
         env.get_template("index.html"),
         {"posts": posts},
@@ -203,7 +197,7 @@ def render_index(posts: Iterable[Post], config: Config) -> str:
     )
 
 
-def render_atom_feed(posts: Iterable[Post], config: Config) -> str:
+def render_atom_feed(posts: Iterable[Post], env: Environment, config: Config) -> str:
     return render_template(
         env.get_template("atom.xml"),
         {"posts": posts},
@@ -224,7 +218,8 @@ def main(args: Optional[Iterable[str]] = None):
     content_dir = base_dir / "content"
     pages_dir = content_dir / "pages"
     posts_dir = content_dir / "posts"
-    static_dir = base_dir / "static"
+    static_dir = content_dir / "static"
+    templates_dir = content_dir / "templates"
     output_dir = base_dir / "dist"
 
     config = Config(
@@ -238,7 +233,8 @@ def main(args: Optional[Iterable[str]] = None):
     logger.info("    content dir: %s", content_dir)
     logger.info("      pages dir: %s", pages_dir)
     logger.info("      posts dir: %s", posts_dir)
-    logger.info("    static dir: %s", static_dir)
+    logger.info("      static dir: %s", static_dir)
+    logger.info("      templates dir: %s", templates_dir)
     logger.info("    output dir: %s", output_dir)
 
     logger.info("config:")
@@ -248,18 +244,23 @@ def main(args: Optional[Iterable[str]] = None):
     logger.info("  author:")
     logger.info("    name: %s", config.author_name)
 
+    env = Environment(
+        loader=FileSystemLoader(templates_dir), autoescape=select_autoescape()
+    )
+    env.filters["docutils"] = docutils_filter
+
     pages = load_pages(pages_dir)
     posts = sorted(load_posts(posts_dir), key=lambda e: e.date, reverse=True)
 
     output_dir.mkdir(parents=True, exist_ok=True)
 
     logger.info("generating index")
-    (output_dir / "index.html").write_text(render_index(posts, config))
+    (output_dir / "index.html").write_text(render_index(posts, env, config))
 
     logger.info("generating posts")
     for post in posts:
         logger.info("  generating post %s.html from %s", post.slug, post.path)
-        (output_dir / f"{post.slug}.html").write_text(render_post(post, config))
+        (output_dir / f"{post.slug}.html").write_text(render_post(post, env, config))
 
     logger.info("generating pages")
     output_pages_dir = output_dir / "pages"
@@ -272,10 +273,16 @@ def main(args: Optional[Iterable[str]] = None):
         logger.info(
             "  generating page %s/%s.html from %s", prefix, page.slug, page.path
         )
-        (page_output_dir / f"{page.slug}.html").write_text(render_page(page, config))
+        (page_output_dir / f"{page.slug}.html").write_text(
+            render_page(page, env, config)
+        )
 
     logger.info("generating atom feed")
-    (output_dir / f"atom.xml").write_text(render_atom_feed(posts, config))
+    (output_dir / f"atom.xml").write_text(render_atom_feed(posts, env, config))
 
     logger.info("copying static files")
     copy_tree(str(static_dir), str(output_dir / "static"))
+
+
+if __name__ == "__main__":
+    main()

@@ -11,11 +11,10 @@ FROM python AS site
 WORKDIR /code
 COPY requirements.txt ./
 RUN pip install -U pip setuptools wheel && pip install -Ur requirements.txt
-COPY jssg/ jssg/
-COPY static/ static/
+COPY jssg.py ./
 COPY content/ content/
-COPY --from=front /code/static/gen/ static/gen/
-RUN python -m jssg --site-url https://jtremesay.org
+COPY --from=front /code/content/static/gen/ static/gen/
+RUN python jssg.py --site-url https://jtremesay.org
 
 FROM nginx
 COPY --from=site /code/dist/ /usr/share/nginx/html/

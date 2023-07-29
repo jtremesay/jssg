@@ -12,4 +12,5 @@ __pycache__/
 /static/gen/
 
 # Generated site
+/content/static/gen/
 /dist/
