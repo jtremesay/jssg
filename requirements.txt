@@ -1,3 +1,4 @@
 docutils
 Jinja2
 Unidecode
+pygments
