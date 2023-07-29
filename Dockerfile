@@ -1,25 +1,22 @@
-FROM node:lts AS front
-WORKDIR /opt/jtremesay
-COPY package.json package-lock.json ./
+FROM node as front
+WORKDIR /code
+COPY package.json ./
+COPY package-lock.json ./
 RUN npm install
-COPY Makefile tsconfig.json vite.config.ts ./
-COPY front front
-RUN make front
-
+COPY tsconfig.json vite.config.ts ./
+COPY front/ front/
+RUN npm run build
 
 FROM python AS site
-RUN pip install -U pip setuptools wheel
-WORKDIR /opt/jtremesay
+WORKDIR /code
 COPY requirements.txt ./
-RUN pip install -Ur requirements.txt
-COPY pelicanconf.py publishconf.py Makefile ./
-COPY filters filters
-COPY theme theme
-COPY tstheme tstheme
-COPY content content
-COPY --from=front /opt/jtremesay/content/static/gen ./content/static/gen 
-RUN make publish
+RUN pip install -U pip setuptools wheel && pip install -Ur requirements.txt
+COPY jssg/ jssg/
+COPY static/ static/
+COPY content/ content/
+COPY --from=front /code/static/gen/ static/gen/
+RUN python -m jssg --site-url https://jtremesay.org
 
-
-FROM nginx AS serve
-COPY --from=site /opt/jtremesay/output /usr/share/nginx/html
+FROM nginx
+COPY --from=site /code/dist/ /usr/share/nginx/html/
+EXPOSE 8000

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<p>
+    Publié le {{ post.date.strftime("%Y-%m-%d") }}.
+    {% if post.modfidied %}Édité pour la dernière fois le {{ post.modified.strftime("%Y-%m-%d") }}{% endif %}
+</p>
+
+<h1>{{ post.title }}</h1>
+
+{{ post.content_rst|docutils|safe }}
+
+{% endblock %}

@@ -1,0 +1,10 @@
+---
+title: JSGG
+date: 2023-07-29T17:33:00+02:00
+---
+
+Bon ben finalement je suis parti sur mon propre générateur, `jsgg`. C'est minimaliste, ça gère rien, c'est parfait pour mes besoins.
+
+C'est juste un bricolage autour de python et jinja.
+
+On verra comment il évolue :)

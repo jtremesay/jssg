@@ -1,9 +1,7 @@
-Computer-Generated Imagery
-##########################
-
-:date: 2023-06-05 20:00
-:modified: 2023-06-08 22:30
-:slug: cgi
+---
+title: Images générés par ordinateur
+slug: cgi
+---
 
 Quelques expérimentations avec la création d'images par ordinateur.
 

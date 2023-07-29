@@ -1,11 +1,7 @@
-Software engineer based at Montpellier, France
-##############################################
-
-:date: 2023-06-05 20:00
-:modified: 2023-06-08 22:30
-:slug: cv
-:lang: en
-
+---
+title: Software engineer based at Montpellier, France
+slug: cv
+---
 Contact
 =======
 

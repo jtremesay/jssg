@@ -1,8 +1,6 @@
-À propos
-########
-
-:date: 2023-06-08 20:00
-:modified: 2023-06-14 21:00
+---
+title: À propos
+---
 
 Bla ?
 =====
@@ -19,6 +17,6 @@ Contact
 
 Vous pouvez m'envoyer un `e-mail <mailto:jonathan.tremesaygues++contact@slaanesh.org>`_. Je réponds selon ma motivation, mais promis, je fini par tout lire !
 
-Ma clé GPG est disponible là : `jonathan.tremesaygues@slaanesh.org.pub.asc <{static}../static/files/jonathan.tremesaygues@slaanesh.org.pub.asc>`_ (id `0xB332E6AC45A21458835F9CAF7B83179210157613 <http://keyserver.ubuntu.com/pks/lookup?search=B332E6AC45A21458835F9CAF7B83179210157613&fingerprint=on&op=index>`_).
+Ma clé GPG est disponible là : `jonathan.tremesaygues@slaanesh.org.pub.asc </static/files/jonathan.tremesaygues_at_slaanesh.org.pub.asc>`_ (id `0xB332E6AC45A21458835F9CAF7B83179210157613 <http://keyserver.ubuntu.com/pks/lookup?search=B332E6AC45A21458835F9CAF7B83179210157613&fingerprint=on&op=index>`_).
 
 Solidairement, Jo
