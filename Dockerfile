@@ -13,7 +13,7 @@ COPY requirements.txt ./
 RUN pip install -U pip setuptools wheel && pip install -Ur requirements.txt
 COPY jssg.py ./
 COPY content/ content/
-COPY --from=front /code/content/static/gen/ static/gen/
+COPY --from=front /code/content/static/gen/ content/static/gen/
 RUN python jssg.py --site-url https://jtremesay.org
 
 FROM nginx
