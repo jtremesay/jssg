@@ -1,5 +1,6 @@
 ---
-title: JSGG
+title: JSSG: jtremesay's static site generator
+slug: jssg
 date: 2023-07-29T17:33:00+02:00
 ---
 
