@@ -5,9 +5,9 @@ date: 2023-08-01T23:00+02:00
 
 Ce soir, j'ai été amené à découvrir `Oracle Cloud <https://cloud.oracle.com>`_ pour aider l'amie `Solène'% <https://dataswamp.org/~solene/>`_.
 
-Je ne pensais pas ça possible, mais j'ai trouvé l'expérience encore plus désagréable que celle offerte `AWS <https://aws.amazon.com/>`_ :D
+Je ne pensais pas ça possible, mais j'ai trouvé l'expérience encore plus désagréable que celle offerte par `AWS <https://aws.amazon.com/>`_ :D
 
-Enfin, bref. Après près d'une heure passée à essayer de créer le compte et se connecter à l'interface (oui, sérieusement), et 2 heures à potasser la doc, voila le `main.tf` que j'accoucha.
+Enfin bref. Après près d'une heure passée à essayer de créer le compte et se connecter à l'interface (oui, sérieusement), et 2 heures à potasser la doc, voila le `main.tf` que j'accoucha.
 
 Il permet de provisionner une VM sous Oracle Linux 9.2, ainsi que tout le bazar autour (VNC, subnet, internet gateway, route table, …).
 
@@ -42,6 +42,7 @@ Il permet de provisionner une VM sous Oracle Linux 9.2, ainsi que tout le bazar 
 
     terraform {
     required_providers {
+        
         oci = {
             source  = "oracle/oci"
             version = "5.6.0"
@@ -49,22 +50,29 @@ Il permet de provisionner une VM sous Oracle Linux 9.2, ainsi que tout le bazar 
         }
     }
 
+    # https://registry.terraform.io/providers/oracle/oci/latest/docs
     provider "oci" {
         # Configuration options
     }
 
+    # https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/identity_compartment
+    # https://docs.oracle.com/en-us/iaas/Content/Identity/Tasks/managingcompartments.htm
     resource "oci_identity_compartment" "sandbox" {
         compartment_id = var.compartment_id
         name           = "sandbox"
         description    = "My first compartment!"
     }
 
+    # https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/core_vcn
+    # https://docs.oracle.com/en-us/iaas/Content/Network/Tasks/managingVCNs.htm
     resource "oci_core_vcn" "sandbox" {
         compartment_id = oci_identity_compartment.sandbox.id
         display_name   = "sandbox"
         cidr_blocks    = ["10.0.0.0/16"]
     }
 
+    # https://registry.terraform.io/providers/oracle/oci/latest/docs/data-sources/core_internet_gateways
+    # https://docs.oracle.com/en-us/iaas/Content/Network/Tasks/managingIGs.htm
     resource "oci_core_internet_gateway" "sandbox" {
         compartment_id = oci_identity_compartment.sandbox.id
         vcn_id         = oci_core_vcn.sandbox.id
@@ -72,6 +80,8 @@ Il permet de provisionner une VM sous Oracle Linux 9.2, ainsi que tout le bazar 
         enabled        = true
     }
 
+    # https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/core_route_table
+    # https://docs.oracle.com/en-us/iaas/Content/Network/Tasks/managingroutetables.htm
     resource "oci_core_route_table" "sandbox_igw" {
         compartment_id = oci_identity_compartment.sandbox.id
         vcn_id         = oci_core_vcn.sandbox.id
@@ -83,6 +93,8 @@ Il permet de provisionner une VM sous Oracle Linux 9.2, ainsi que tout le bazar 
         }
     }
 
+    # https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/core_subnet
+    # https://docs.oracle.com/en-us/iaas/Content/Network/Tasks/managingVCNs.htm
     resource "oci_core_subnet" "sanbox_public" {
         cidr_block     = "10.0.0.0/24"
         compartment_id = oci_identity_compartment.sandbox.id
@@ -90,11 +102,14 @@ Il permet de provisionner une VM sous Oracle Linux 9.2, ainsi que tout le bazar 
         display_name   = "sandbox-public"
     }
 
+    # https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/core_route_table_attachment
     resource "oci_core_route_table_attachment" "sandbox_public_igw" {
         subnet_id      = oci_core_subnet.sanbox_public.id
         route_table_id = oci_core_route_table.sandbox_igw.id
     }
 
+    # https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/core_instance
+    # https://docs.oracle.com/en-us/iaas/Content/Compute/Concepts/computeoverview.htm
     resource "oci_core_instance" "sandbox" {
         compartment_id      = oci_identity_compartment.sandbox.id
         availability_domain = var.availability_domain
