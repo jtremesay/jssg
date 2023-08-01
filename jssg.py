@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+#
 # JSSG - Jtremesay's Static Site Generator
 # Copyright (C) 2023 Jonathan Tremesaygues
 #
