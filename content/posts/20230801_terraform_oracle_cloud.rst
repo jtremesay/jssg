@@ -20,12 +20,14 @@ Il permet de provisionner une VM sous Oracle Linux 9.2, ainsi que tout le bazar 
         default = "ocid1.tenancy.oc1.."
     }
 
+
     # eu-marseille-1
     # https://docs.oracle.com/en-us/iaas/Content/General/Concepts/regions.htm
     variable "availability_domain" {
         type    = string
         default = "nLTo:EU-MARSEILLE-1-AD-1"
     }
+
 
     # Oracle Linux 9.2, eu-marseille-1
     # https://docs.oracle.com/en-us/iaas/images/image/ba32bce1-c03a-48be-8dba-4436b1b190d3/
@@ -34,11 +36,13 @@ Il permet de provisionner une VM sous Oracle Linux 9.2, ainsi que tout le bazar 
         default = "ocid1.image.oc1.eu-marseille-1.aaaaaaaa5mugakrcfhb73itd7uvclgorricrb5n4g7ydgykxyzejqcdocqda"
     }
 
+
     # SSH public key
     variable "ssh_public_key" {
         type    = string
         default = "ssh-rsa ... id_rsa"
     }
+
 
     terraform {
     required_providers {
@@ -50,10 +54,12 @@ Il permet de provisionner une VM sous Oracle Linux 9.2, ainsi que tout le bazar 
         }
     }
 
+
     # https://registry.terraform.io/providers/oracle/oci/latest/docs
     provider "oci" {
         # Configuration options
     }
+
 
     # https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/identity_compartment
     # https://docs.oracle.com/en-us/iaas/Content/Identity/Tasks/managingcompartments.htm
@@ -63,6 +69,7 @@ Il permet de provisionner une VM sous Oracle Linux 9.2, ainsi que tout le bazar 
         description    = "My first compartment!"
     }
 
+
     # https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/core_vcn
     # https://docs.oracle.com/en-us/iaas/Content/Network/Tasks/managingVCNs.htm
     resource "oci_core_vcn" "sandbox" {
@@ -70,6 +77,7 @@ Il permet de provisionner une VM sous Oracle Linux 9.2, ainsi que tout le bazar 
         display_name   = "sandbox"
         cidr_blocks    = ["10.0.0.0/16"]
     }
+
 
     # https://registry.terraform.io/providers/oracle/oci/latest/docs/data-sources/core_internet_gateways
     # https://docs.oracle.com/en-us/iaas/Content/Network/Tasks/managingIGs.htm
@@ -79,6 +87,7 @@ Il permet de provisionner une VM sous Oracle Linux 9.2, ainsi que tout le bazar 
         display_name   = "sandbox"
         enabled        = true
     }
+
 
     # https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/core_route_table
     # https://docs.oracle.com/en-us/iaas/Content/Network/Tasks/managingroutetables.htm
@@ -93,6 +102,7 @@ Il permet de provisionner une VM sous Oracle Linux 9.2, ainsi que tout le bazar 
         }
     }
 
+
     # https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/core_subnet
     # https://docs.oracle.com/en-us/iaas/Content/Network/Tasks/managingVCNs.htm
     resource "oci_core_subnet" "sanbox_public" {
@@ -102,11 +112,13 @@ Il permet de provisionner une VM sous Oracle Linux 9.2, ainsi que tout le bazar 
         display_name   = "sandbox-public"
     }
 
+
     # https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/core_route_table_attachment
     resource "oci_core_route_table_attachment" "sandbox_public_igw" {
         subnet_id      = oci_core_subnet.sanbox_public.id
         route_table_id = oci_core_route_table.sandbox_igw.id
     }
+
 
     # https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/core_instance
     # https://docs.oracle.com/en-us/iaas/Content/Compute/Concepts/computeoverview.htm
@@ -128,6 +140,7 @@ Il permet de provisionner une VM sous Oracle Linux 9.2, ainsi que tout le bazar 
             ssh_authorized_keys = var.ssh_public_key
         }
     }
+    
 
     output "vm_ip" {
         value = oci_core_instance.sandbox.public_ip
