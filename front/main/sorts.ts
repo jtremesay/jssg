@@ -56,6 +56,18 @@ function* bubble_sort(samples: Array<number>): Generator {
     } while (swapped)
 }
 
+function* gnome_sort(samples: Array<number>): Generator {
+    for (let i = 0; i < samples.length;) {
+        if (i == 0 || samples[i] >= samples[i - 1]) {
+            ++i
+        } else {
+            swap(samples, i, i - 1)
+            i--
+            yield
+        }
+    }
+}
+
 function* insertion_sort(samples: Array<number>): Generator {
     for (let i = 1; i < samples.length; ++i) {
         let j = i
@@ -102,6 +114,7 @@ class Engine {
     sorter: Generator | null
     sorters: Map<string, (samples: Array<number>) => Generator> = new Map([
         ["bubble", bubble_sort],
+        ["gnome", gnome_sort],
         ["insertion", insertion_sort],
         ["odd_even", odd_even_sort]
     ])
