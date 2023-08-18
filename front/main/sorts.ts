@@ -67,6 +67,31 @@ function* insertion_sort(samples: Array<number>): Generator {
     }
 }
 
+function* odd_even_sort(samples: Array<number>): Generator {
+    let sorted = false
+    while (!sorted) {
+        for (let j = 0; j < 2; ++j) {
+            sorted = true
+            for (let i = 1; i < samples.length - 1; i += 2) {
+                if (samples[i] > samples[i + 1]) {
+                    swap(samples, i, i + 1);
+                    sorted = false;
+                    yield
+                }
+            }
+        }
+        sorted = true
+        for (let i = 0; i < samples.length - 1; i += 2) {
+            if (samples[i] > samples[i + 1]) {
+                swap(samples, i, i + 1);
+                sorted = false;
+                yield
+            }
+        }
+    }
+}
+
+
 class Engine {
     canvas: HTMLCanvasElement
     sorter_selector: HTMLSelectElement
@@ -75,7 +100,11 @@ class Engine {
     ctx: CanvasRenderingContext2D
     samples: Array<number>
     sorter: Generator | null
-    sorters: Map<string, (samples: Array<number>) => Generator> = new Map([["bubble", bubble_sort], ["insertion", insertion_sort]])
+    sorters: Map<string, (samples: Array<number>) => Generator> = new Map([
+        ["bubble", bubble_sort],
+        ["insertion", insertion_sort],
+        ["odd_even", odd_even_sort]
+    ])
 
     constructor(app_id: string = "app") {
         let app = document.getElementById(app_id)!
