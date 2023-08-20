@@ -200,11 +200,15 @@ def render_template(tpl: Template, ctx: dict[str, Any], config: Config) -> str:
 
 
 def render_page(page: Page, env: Environment, config: Config) -> str:
-    return render_template(env.get_template("page.html"), {"page": page}, config)
+    return render_template(
+        env.get_template("page.html"), {"title": page.title, "page": page}, config
+    )
 
 
 def render_post(post: Post, env: Environment, config: Config) -> str:
-    return render_template(env.get_template("post.html"), {"post": post}, config)
+    return render_template(
+        env.get_template("post.html"), {"title": post.title, "post": post}, config
+    )
 
 
 def render_index(posts: Iterable[Post], env: Environment, config: Config) -> str:
