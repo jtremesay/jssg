@@ -24,7 +24,7 @@ from datetime import datetime as DateTime
 from distutils.dir_util import copy_tree
 from io import StringIO
 from pathlib import Path
-from typing import Any, Generator, Iterable, Optional
+from typing import Any, Iterable, Optional
 from urllib.parse import urlparse
 
 from docutils.core import publish_parts
@@ -36,11 +36,28 @@ logger = logging.getLogger(__name__)
 
 
 def docutils_filter(value: str) -> str:
+    """Restructuredtext to HTML5 Jinja filter
+
+    :param value: The restructured text document
+    :return: The generated HTML5 document
+    """
     return publish_parts(value, writer_name="html5")["body"]
 
 
 def slugify(title: str) -> str:
+    """Generate a slug from a title
+
+    Keep only alphadigit chars, upper case char are lower cased, spaces are
+    replaced by dash.
+
+    slugify("A  sample STRING") == "a-sample-string"
+
+    :param title: The title
+    :return: The slug
+    """
+
     def step1(title: str):
+        # Only keep alphadigits and spaces replaced by dashes
         for c in title:
             if c.isalpha():
                 yield c.lower()
@@ -50,6 +67,7 @@ def slugify(title: str) -> str:
                 yield "_"
 
     def step2(title: str):
+        # Replace sequence of dashes with a single dash
         prev = None
         for c in step1(title):
             if c == "_" and prev == "_":
@@ -63,131 +81,132 @@ def slugify(title: str) -> str:
 
 @dataclass
 class Config:
+    """Website config"""
+
     site_name: str
     site_url: str
     author_name: str
 
 
-@dataclass
 class Document:
-    metadata: dict[str, str]
-    content_rst: str
+    """A document
 
+    A text with some metadata
 
-def load_document(path: Path) -> Document:
-    metadata = {}
-    content_rst = StringIO()
+    This is a base class for more specialized document types
+    """
 
-    with path.open() as f:
-        state = 0
-        for line in f:
-            if state == 0:
-                if line.rstrip() == "---":
-                    state = 1
+    def __init__(self, content_rst: str, **metadata) -> None:
+        self.content_rst = content_rst
+        self.metadata = dict(metadata)
+        self.path = metadata["path"]
+
+    @classmethod
+    def load(cls, path: Path) -> "Document":
+        """Load a document
+
+        :param path: Path to the document
+        :return: The loaded document
+        """
+        metadata = {}
+        content_rst = StringIO()
+
+        with path.open() as f:
+            # States:
+            # 0: search the metadata start block
+            # 1: parse the metadata
+            # 2: parse the content
+            state = 0
+            for line in f:
+                if state == 0:
+                    # Search the metadata start block
+                    # The metadata start block is expected to be on the first line
+                    if line.rstrip() == "---":
+                        # Metadata start block found
+                        state = 1
+                    else:
+                        # Metadata start block not found, abort
+                        break
+                elif state == 1:
+                    if line.rstrip() == "---":
+                        # Metadata end block found
+                        state = 2
+                    else:
+                        # Parse a metadata key value pair
+                        key, value = map(str.strip, line.split(":", maxsplit=1))
+                        metadata[key] = value
                 else:
-                    break
-            elif state == 1:
-                if line.rstrip() == "---":
-                    state = 2
-                else:
-                    key, value = map(str.strip, line.split(":", maxsplit=1))
-                    metadata[key] = value
-            else:
-                content_rst.write(line)
+                    # Read the content
+                    content_rst.write(line)
 
-    if state == 0:
-        raise ValueError(
-            f"Document {path.resolve()} doesn't start with a meta-data block"
-        )
-    elif state == 1:
-        raise ValueError(
-            f"Document {path.resolve()}'s meta-data block doesn't have an end"
-        )
-
-    return Document(metadata=metadata, content_rst=content_rst.getvalue())
-
-
-@dataclass
-class Page:
-    title: str
-    slug: str
-    path: Optional[Path]
-    content_rst: str
-
-
-def load_page(path: Path) -> Page:
-    document = load_document(path)
-    try:
-        title = document.metadata["title"]
-    except KeyError:
-        raise ValueError(f"Title not defined for page {path.resolve()}")
-
-    try:
-        slug = document.metadata["slug"]
-    except KeyError:
-        slug = slugify(title)
-
-    return Page(title=title, slug=slug, path=path, content_rst=document.content_rst)
-
-
-@dataclass
-class Post(Page):
-    date: DateTime
-    modified: Optional[DateTime]
-
-
-def load_post(path: Path) -> Post:
-    document = load_document(path)
-    try:
-        title = document.metadata["title"]
-    except KeyError:
-        raise ValueError(f"Title not defined for post {path.resolve()}")
-
-    try:
-        slug = document.metadata["slug"]
-    except KeyError:
-        slug = slugify(title)
-
-    try:
-        date = document.metadata["date"]
-    except KeyError:
-        raise ValueError(f"Date not defined for post {path.resolve()}")
-    else:
-        date = DateTime.fromisoformat(date)
-
-    try:
-        modified = document.metadata["modified"]
-    except KeyError:
-        modified = None
-    else:
-        modified = DateTime.fromisoformat(modified)
-        if modified < date:
+        if state == 0:
+            # Empty document or document not starting by a metadata block
             raise ValueError(
-                f"Modification date is anterior to creation date for post {path.resolve()}"
+                f"Document {path.resolve()} doesn't start with a meta-data block"
+            )
+        elif state == 1:
+            # Metadata end block not found
+            raise ValueError(
+                f"Document {path.resolve()}'s meta-data block doesn't have an end"
             )
 
-    return Post(
-        title=title,
-        slug=slug,
-        path=path,
-        date=date,
-        modified=modified,
-        content_rst=document.content_rst,
-    )
+        metadata["path"] = path
+
+        return cls(content_rst=content_rst.getvalue(), **metadata)
+
+    @classmethod
+    def load_glob(cls, path: Path, glob: str = "*.rst") -> list["Document"]:
+        """Load multiple document
+
+        :param path: The base path
+        :param glob: The glob pattern
+        :return: The documents that match the pattern
+        """
+        return list(map(cls.load, path.glob(glob)))
 
 
-def load_documents(
-    path: Path, loader=load_document, glob: str = "*.rst"
-) -> list[Document]:
-    return list(map(loader, path.glob(glob)))
+class Page(Document):
+    """A webpage, with a title and some content"""
+
+    def __init__(self, content_rst: str, **metadata) -> None:
+        super().__init__(content_rst, **metadata)
+        self.title = metadata["title"]
+        try:
+            self.slug = metadata["slug"]
+        except KeyError:
+            self.slug = slugify(self.title)
+
+    @classmethod
+    def load_pages(cls, path: Path, glob="*.rst") -> list["Page"]:
+        """Load multiples pages
+
+        :param path: The base path
+        :param glob: The glob pattern
+        :return: The pages that match the pattern
+        """
+        return cls.load_glob(path, "**/*.rst")
 
 
-def load_pages(path: Path, glob="*.rst") -> list[Page]:
-    return load_documents(path, loader=load_page, glob="**/*.rst")
+class Post(Page):
+    """A blog post page"""
 
+    def __init__(self, content_rst: str, **metadata) -> None:
+        super().__init__(content_rst, **metadata)
+        self.date = DateTime.fromisoformat(self.metadata["date"])
+        try:
+            self.modified = DateTime.fromisoformat(self.metadata["modified"])
+        except KeyError:
+            self.modified = None
 
-def load_posts(path: Path) -> list[Path]:
-    return load_documents(path, loader=load_post)
+    @classmethod
+    def load_posts(cls, path: Path) -> list["Post"]:
+        """Load multiples posts
+
+        :param path: The base path
+        :param glob: The glob pattern
+        :return: The posts that match the pattern
+        """
+        return cls.load_glob(path)
 
 
 def render_template(tpl: Template, ctx: dict[str, Any], config: Config) -> str:
@@ -271,8 +290,8 @@ def main(args: Optional[Iterable[str]] = None):
     )
     env.filters["docutils"] = docutils_filter
 
-    pages = load_pages(pages_dir)
-    posts = sorted(load_posts(posts_dir), key=lambda e: e.date, reverse=True)
+    pages = Page.load_pages(pages_dir)
+    posts = sorted(Post.load_posts(posts_dir), key=lambda e: e.date, reverse=True)
 
     output_dir.mkdir(parents=True, exist_ok=True)
 
