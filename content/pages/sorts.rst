@@ -2,38 +2,71 @@
 title: Tris animés
 ---
 
-Un truc much en vanilla TS pour visualiser les algos de tris.
+Un truc much en vanilla TS pour visualiser différents algos de tris.
 
 .. raw:: html
     
-    <script src="/static/gen/sorts.js" type="module"></script>
     <div id="app">
         <div>
+            <label>
+                <code>log2(</code>Nombre d'échantillons<code>)</code> :
 
-        <label for="sort">
-            Sort:
-            <select name="sort" id="sort">
-            </select>
-        </label>
+                <input type="number" name="samples_count" min="1" max="10" value="6">
+            </label>
 
-        <label for="samples_count">
-            <code>log2(</code>Samples count <code>)</code>:
+            <label>
+                <input type="button" name="reset" value="Reset">
+            </label>
 
-            <input type="number" name="samples_count" id="samples_count" min="1" max="10" value="6">
-        </label>
-
-        <label for="reset">
-            <input type="button" name="reset" id="reset" value="Reset">
-        </label>
-
-        <label for="playback">
-            Playback:
-            <input type="checkbox" name="playback" id="playback" checked>
-        </label>
-
+            <label>
+                Jouer :
+                <input type="checkbox" name="playback" checked>
+            </label>
         </div>
-        <canvas name="canvas" width="640" height="480"></canvas>
+        <table>
+            <thead>
+                <tr>
+                    <th>Algorithme</th>
+                    <th>Visualisation</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <a href="https://fr.wikipedia.org/wiki/Tri_%C3%A0_bulles">Bubble</a>
+                    </td>
+                    <td>
+                        <canvas data-sort="bubble" width="640" height="480"></canvas>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="https://en.wikipedia.org/wiki/Gnome_sort">Gnome</a>
+                    </td>
+                    <td>
+                        <canvas data-sort="gnome" width="640" height="480"></canvas>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="https://fr.wikipedia.org/wiki/Tri_par_insertion">Insertion</a>
+                    </td>
+                    <td>
+                        <canvas data-sort="insertion" width="640" height="480"></canvas>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="https://fr.wikipedia.org/wiki/Tri_pair-impair">Pair-Impair</a>
+                    </td>
+                    <td>
+                        <canvas data-sort="oddeven" width="640" height="480"></canvas>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
+    <script src="/static/gen/sorts.js" type="module"></script>
 
 
 Code source disponible `ici <https://github.com/jtremesay/jtremesay.org/blob/main/front/main/sorts.ts>`_.

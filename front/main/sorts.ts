@@ -42,7 +42,7 @@ function shuffle(array: Array<number>): Array<number> {
     return array
 }
 
-function* bubble_sort(samples: Array<number>): Generator {
+function* bubble_sort(samples: Array<number>): Generator<Array<number>> {
     let swapped = false
     do {
         swapped = false
@@ -50,36 +50,39 @@ function* bubble_sort(samples: Array<number>): Generator {
             if (samples[i - 1] > samples[i]) {
                 swap(samples, i, i - 1)
                 swapped = true
-                yield
+
+                yield samples
             }
         }
     } while (swapped)
 }
 
-function* gnome_sort(samples: Array<number>): Generator {
+function* gnome_sort(samples: Array<number>): Generator<Array<number>> {
     for (let i = 0; i < samples.length;) {
         if (i == 0 || samples[i] >= samples[i - 1]) {
             ++i
         } else {
             swap(samples, i, i - 1)
             i--
-            yield
+
+            yield samples
         }
     }
 }
 
-function* insertion_sort(samples: Array<number>): Generator {
+function* insertion_sort(samples: Array<number>): Generator<Array<number>> {
     for (let i = 1; i < samples.length; ++i) {
         let j = i
         while (j > 0 && samples[j - 1] > samples[j]) {
             swap(samples, j, j - 1)
             j--
-            yield
+
+            yield samples
         }
     }
 }
 
-function* odd_even_sort(samples: Array<number>): Generator {
+function* odd_even_sort(samples: Array<number>): Generator<Array<number>> {
     let sorted = false
     while (!sorted) {
         for (let j = 0; j < 2; ++j) {
@@ -88,7 +91,8 @@ function* odd_even_sort(samples: Array<number>): Generator {
                 if (samples[i] > samples[i + 1]) {
                     swap(samples, i, i + 1);
                     sorted = false;
-                    yield
+
+                    yield samples
                 }
             }
         }
@@ -97,54 +101,48 @@ function* odd_even_sort(samples: Array<number>): Generator {
             if (samples[i] > samples[i + 1]) {
                 swap(samples, i, i + 1);
                 sorted = false;
-                yield
+                yield samples
             }
         }
     }
 }
 
+const SORTERS: Map<string, (samples: Array<number>) => Generator<Array<number>>> = new Map([
+    ["bubble", bubble_sort],
+    ["gnome", gnome_sort],
+    ["insertion", insertion_sort],
+    ["oddeven", odd_even_sort]
+])
 
-class Engine {
+
+class Sorter {
     canvas: HTMLCanvasElement
-    sorter_selector: HTMLSelectElement
-    samples_count: HTMLInputElement
-    playback: HTMLInputElement
     ctx: CanvasRenderingContext2D
+    sorter: Generator<Array<number>> | null
     samples: Array<number>
-    sorter: Generator | null
-    sorters: Map<string, (samples: Array<number>) => Generator> = new Map([
-        ["bubble", bubble_sort],
-        ["gnome", gnome_sort],
-        ["insertion", insertion_sort],
-        ["odd_even", odd_even_sort]
-    ])
 
-    constructor(app_id: string = "app") {
-        let app = document.getElementById(app_id)!
-        this.canvas = app.querySelector("[name=canvas]") as HTMLCanvasElement
-        this.ctx = this.canvas.getContext("2d")!
-        this.sorter_selector = app.querySelector("[name=sort]")!
-        this.sorter_selector.addEventListener("change", this.start.bind(this))
-        this.samples_count = app.querySelector("[name=samples_count]")!
-        this.samples_count.addEventListener("change", this.start.bind(this))
-        this.playback = app.querySelector("[name=playback]")!
-        app.querySelector("[name=reset]")?.addEventListener("click", this.start.bind(this))
-
-        this.samples = []
+    constructor(canvas: HTMLCanvasElement) {
+        this.canvas = canvas
+        this.ctx = canvas.getContext("2d")!
         this.sorter = null
-        this.sorters.forEach((_fn, name) => {
-            let node = document.createElement("option")
-            node.label = name
-            node.value = name
-            this.sorter_selector.appendChild(node)
-        })
+        this.samples = []
     }
 
-    update(_time: DOMHighResTimeStamp) {
-        if (this.playback.checked && this.sorter != null) {
-            this.sorter.next()
-        }
+    reset(samples: Array<number>) {
+        this.samples = samples
+        this.sorter = SORTERS.get(this.canvas.dataset.sort!)!(samples)
+    }
 
+    update() {
+        if (this.sorter != null) {
+            let result = this.sorter.next()
+            if (!result.done) {
+                this.samples = result.value
+            }
+        }
+    }
+
+    render() {
         // Clear
         this.ctx.fillStyle = "#333"
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
@@ -163,20 +161,57 @@ class Engine {
             this.ctx.fillRect(i, 0, 1, sample)
         })
         this.ctx.restore()
-        this.schedule_update()
+    }
+}
+
+
+class Engine {
+    samples_count_input: HTMLInputElement
+    playback_input: HTMLInputElement
+    sorters: Array<Sorter>
+
+    constructor() {
+        let app_node = document.getElementById("app")!
+        this.samples_count_input = app_node.querySelector("input[name=samples_count]")! as HTMLInputElement
+        this.samples_count_input.addEventListener("input", this.reset.bind(this))
+        let reset_input = app_node.querySelector("input[name=reset]")! as HTMLInputElement
+        reset_input.addEventListener("click", this.reset.bind(this))
+        this.playback_input = app_node.querySelector("input[name=playback]")! as HTMLInputElement
+
+        this.sorters = []
+        for (let canvas of app_node.querySelectorAll("canvas") as NodeListOf<HTMLCanvasElement>) {
+            this.sorters.push(new Sorter(canvas))
+        }
+
+        this.reset()
     }
 
-    schedule_update() {
-        window.requestAnimationFrame(this.update.bind(this))
+    reset() {
+        let samples = shuffle(Array(Math.pow(2, parseInt(this.samples_count_input.value))).fill(0).map((_k, i) => i))
+        for (let sorter of this.sorters) {
+            sorter.reset(new Array(...samples))
+        }
     }
 
     start() {
-        let fn = this.sorters.get(this.sorter_selector.value)
-        if (fn != null) {
-            this.samples = shuffle(Array(Math.pow(2, parseInt(this.samples_count.value))).fill(0).map((_k, i) => i))
-            this.sorter = fn(this.samples)
+        this.update()
+        this.render()
+
+        window.requestAnimationFrame(this.start.bind(this))
+    }
+
+    update() {
+        if (this.playback_input.checked) {
+            for (let sorter of this.sorters) {
+                sorter.update()
+            }
         }
-        this.schedule_update()
+    }
+
+    render() {
+        for (let sorter of this.sorters) {
+            sorter.render()
+        }
     }
 }
 
