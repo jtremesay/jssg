@@ -13,19 +13,21 @@ let samples_count = 0
 let samples_in_circle = 0
 
 function update() {
+
+    ctx.fillStyle = "rgba(0, 0, 0, 0.002)"
+    ctx.fillRect(0, 0, canvas.width, canvas.height)
+
     for (let i = 0; i < 1000; ++i) {
         let x = Math.random()
         let y = Math.random()
 
         samples_count++
-        if (Math.sqrt(Math.pow(x - 0.5, 2) + Math.pow(y - 0.5, 2)) <= 0.5) {
+        if (Math.sqrt(x * x + y * y) < 1) {
             ctx.fillStyle = "#0d0"
             samples_in_circle++
         } else {
-
             ctx.fillStyle = "#d00"
         }
-
         ctx.fillRect(x * canvas.width, y * canvas.height, 1, 1)
     }
     samples_count_input.value = samples_count.toString()
