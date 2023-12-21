@@ -4,6 +4,10 @@ title: Scadaplayer
 
 Un truc much en vanilla TS pour visualiser les données issues d'une éolienne.
 
+Les données sont issus de l'éolienne R80711 (une Senvion MM82 de puissance nominale 2.05MW) du parc éolien La Haute Borne de Engie et concerne la journée du 1 janvier 2013.
+
+Le dataset était initialement disponible en opendata là https://opendata-renewables.engie.com, mais le site est maintenant mort :(
+
 .. raw:: html
     
     <div id="scadaplayer">
