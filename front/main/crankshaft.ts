@@ -10,10 +10,11 @@ class Engine {
     crankshaft_radius: number
     rod_length: number
 
-    crankshaft_node: d3.BaseType
-    piston_node?: d3.BaseType
-    rod_node?: d3.BaseType
-
+    text_infos_node: d3.BaseType
+    piston_node: d3.BaseType
+    rod_node: d3.BaseType
+    crankshaft_pin_node: d3.BaseType
+    piston_pin_node: d3.BaseType
 
     constructor(crankshaft_radius: number, rod_length: number, container: d3.BaseType) {
         this.should_run = true
@@ -21,79 +22,107 @@ class Engine {
         this.crankshaft_radius = crankshaft_radius
         this.rod_length = rod_length
 
-        let width = 250//Math.max(PISTON_RADIUS, crankshaft_radius) * 2 + 50
-        let height = 800//crankshaft_radius * 2 + rod_length + PISTON_HEIGHT + 50
+        let width = 400
+        let height = 800
 
         let $svg = d3.select(container)
             .append("svg")
             .attr("width", width)
             .attr("height", height)
-            .attr("viewBox", [-width / 2, -height + 150, width, height])
+            .attr("viewBox", [0, 0, width, height])
             .attr("style", "background-color: grey")
 
-        this.crankshaft_node = $svg.append("g")
-            .call(($crankshaft) => {
-                $crankshaft.append("circle")
-                    .attr("r", crankshaft_radius)
-                    .attr("style", "fill: red")
+        // Bodies
+        let $bodies = $svg.append("g")
+            .attr("transform", `translate(${width / 2}, ${height - 150})`)
 
-                $crankshaft.append("g")
-                    .attr("transform", [`translate(0, -${this.crankshaft_radius})`])
-                    .call(($crankshaft_pin) => {
-                        // rod
-                        this.rod_node = $crankshaft_pin.append("g")
-                            .call(($rod) => {
-                                $rod.append("rect")
-                                    .attr("x", -PIN_RADIUS)
-                                    .attr("y", -this.rod_length)
-                                    .attr("width", PIN_RADIUS * 2)
-                                    .attr("height", rod_length)
-                                    .attr("style", "fill: green")
+        // Crankshaft
+        $bodies.append("circle")
+            .attr("r", this.crankshaft_radius)
+            .attr("style", "fill: red")
 
+        // Piston
+        this.piston_node = $bodies.append("line")
+            .attr("y2", -PISTON_HEIGHT)
+            .attr("style", `stroke: blue; stroke-width: ${PISTON_RADIUS * 2}`)
+            .node()
 
-                                // Piston
-                                this.piston_node = $rod.append("g").call(($piston) => {
-                                    $piston.append("rect")
-                                        .attr("x", -PISTON_RADIUS)
-                                        .attr("y", -PISTON_HEIGHT)
-                                        .attr("width", PISTON_RADIUS * 2)
-                                        .attr("height", PISTON_HEIGHT)
-                                        .attr("style", "fill: blue")
+        // Rod
+        this.rod_node = $bodies.append("line")
+            .attr("y2", -this.rod_length)
+            .attr("style", `stroke: green; stroke-width: ${PIN_RADIUS * 2}`)
+            .node()
 
+        // Crank pin
+        this.crankshaft_pin_node = $bodies.append("circle")
+            .attr("r", PIN_RADIUS)
+            .attr("style", "fill: pink")
+            .node()
 
-                                    $piston.append("circle")
-                                        .attr("r", PIN_RADIUS)
-                                        .attr("style", "fill: pink")
-                                }).node()
-                            }).node()
+        // Piston pin
+        this.piston_pin_node = $bodies.append("circle")
+            .attr("r", PIN_RADIUS)
+            .attr("style", "fill: pink")
+            .node()
 
-                        $crankshaft_pin.append("circle")
-                            .attr("r", PIN_RADIUS)
-                            .attr("style", "fill: pink")
-                    })
-            }).node()
+        // Text infos
+        this.text_infos_node = $svg.append("g")
+            .attr("transform", "translate(5, 20)").node()
+
     }
 
     update(dt: DOMHighResTimeStamp) {
-        dt /= 1000
+        let theta = dt / 1000
 
-        let theta = dt
+        let tdc_y = this.crankshaft_radius + this.rod_length
+        //let bdc_y = -this.crankshaft_radius + this.rod_length
 
-        // Crankshaft
-        d3.select(this.crankshaft_node)
-            .attr("transform", [`rotate(${theta * 180 / Math.PI})`])
-        // Rod
-        d3.select(this.rod_node!)
-            .attr("transform", [
-                `rotate(${-theta * 180 / Math.PI})`,
-                `rotate(${-(Math.asin(Math.sin(theta) * this.crankshaft_radius / this.rod_length)) * 180 / Math.PI})`,
-            ])
+        let piston_y = -(this.crankshaft_radius * Math.cos(theta) + Math.sqrt(Math.pow(this.rod_length, 2) - Math.pow(this.crankshaft_radius, 2) * Math.pow(Math.sin(theta), 2)))
+
+        let piston_yrel = tdc_y - piston_y
+        //let cylinder_ratio = 0
+        // Infos
+        d3.select(this.text_infos_node).selectAll("text")
+            .data([
+                `Crankshaft radius: ${this.crankshaft_radius} units`,
+                `Crankshaft theta: ${(theta % (2 * Math.PI)).toFixed(1)} rad`,
+                `Crankshaft ang. vel.: 60 RPM`,
+                `Crankshaft lin. vel.: ${(2 * this.crankshaft_radius * Math.PI).toFixed(1)} units.s⁻¹`,
+                `Rod length: ${this.rod_length} units`,
+                `Rod / Crankshaft ratio: ${(this.rod_length / this.crankshaft_radius).toFixed(2)}`,
+                `Rod theta: TODO rad`,
+                `Piston radius: ${PISTON_RADIUS} units`,
+                `Piston height: ${PISTON_HEIGHT} units`,
+                `Piston y: ${piston_yrel.toFixed(0)} units`,
+                `Cylinder volume: ${((PISTON_RADIUS * PISTON_RADIUS * Math.PI) * (this.crankshaft_radius * 2) / 1000).toFixed(1)} kunits³`,
+                `Cylinder current volume: TODO units³`,
+                `Cylinder compression ratio: TODO`,])
+            .join("text")
+            .attr("y", (_d, i) => i * 20)
+            .text((d) => d)
+
         // Piston
-        d3.select(this.piston_node!)
+        d3.select(this.piston_node)
             .attr("transform", [
-                `translate(0, ${-this.rod_length})`,
-                `rotate(${(Math.asin(Math.sin(theta) * this.crankshaft_radius / this.rod_length)) * 180 / Math.PI})`,
+                `translate(0, ${piston_y})`,
             ])
+
+        // Rod
+        d3.select(this.rod_node)
+            .attr("transform", [
+                `translate(0, ${piston_y})`,
+                `rotate(${(-Math.asin(Math.sin(theta) * this.crankshaft_radius / this.rod_length)) * 180 / Math.PI})`
+            ])
+
+        // Crankshaft pin
+        d3.select(this.crankshaft_pin_node)
+            .attr("transform", [
+                `translate(0, ${-this.crankshaft_radius})`,
+                `rotate(${theta * 180 / Math.PI}, 0, ${this.crankshaft_radius})`])
+
+        // Piston pin
+        d3.select(this.piston_pin_node)
+            .attr("transform", [`translate(0, ${piston_y})`])
     }
 
     run() {
@@ -110,13 +139,14 @@ class Engine {
 
 
 d3.select("#app").call(function ($app) {
+
     let crankshaft_radiuses = [20, 50, 100]
-    let rod_lengths = [40, 100, 150, 200, 250, 300]
+    let rod_scales = [2, 2.5, 3, 3.5, 4]
 
     $app.append("table").call(($table) => {
         $table.append("thead").call(($thead) => {
             $thead.append("tr").call(($tr) => {
-                $tr.append("th").text("Rod length")
+                $tr.append("th").text("Rod / Crankshaft ratio")
                 $tr.append("th")
                     .attr("colspan", crankshaft_radiuses.length)
                     .text("Crankshaft radius")
@@ -133,15 +163,15 @@ d3.select("#app").call(function ($app) {
         })
         $table.append("tbody").call(($tbody) => {
             $tbody.selectAll("tr")
-                .data(rod_lengths)
+                .data(rod_scales)
                 .join("tr")
-                .each(function (rod_length) {
+                .each(function (rod_scale) {
                     d3.select(this).call(($tr) => {
-                        $tr.append("th").text(rod_length)
+                        $tr.append("th").text(rod_scale)
                         $tr.selectAll("td")
                             .data(crankshaft_radiuses)
                             .join("td").each(function (crankshaft_radius) {
-                                new Engine(crankshaft_radius, rod_length, this).run()
+                                new Engine(crankshaft_radius, crankshaft_radius * rod_scale, this).run()
                             })
                     })
                 })
