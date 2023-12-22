@@ -11,6 +11,7 @@ class Engine {
     rod_length: number
 
     text_infos_node: d3.BaseType
+    cylinder_node: d3.BaseType
     piston_node: d3.BaseType
     rod_node: d3.BaseType
     crankshaft_pin_node: d3.BaseType
@@ -32,9 +33,18 @@ class Engine {
             .attr("viewBox", [0, 0, width, height])
             .attr("style", "background-color: grey")
 
+
+
         // Bodies
         let $bodies = $svg.append("g")
             .attr("transform", `translate(${width / 2}, ${height - 150})`)
+
+        // Cylinder
+        this.cylinder_node = $bodies.append("line")
+            .attr("y1", -this.crankshaft_radius - this.rod_length - PISTON_HEIGHT)
+            .attr("y2", this.crankshaft_radius - this.rod_length - PISTON_HEIGHT)
+            .attr("style", `stroke: purple; stroke-width: ${PISTON_RADIUS * 2}`)
+            .node()
 
         // Crankshaft
         $bodies.append("circle")
@@ -49,7 +59,7 @@ class Engine {
 
         // Rod
         this.rod_node = $bodies.append("line")
-            .attr("y2", -this.rod_length)
+            .attr("y2", this.rod_length)
             .attr("style", `stroke: green; stroke-width: ${PIN_RADIUS * 2}`)
             .node()
 
