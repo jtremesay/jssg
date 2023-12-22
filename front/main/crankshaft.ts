@@ -11,7 +11,6 @@ class Engine {
     rod_length: number
 
     text_infos_node: d3.BaseType
-    cylinder_node: d3.BaseType
     piston_node: d3.BaseType
     rod_node: d3.BaseType
     crankshaft_pin_node: d3.BaseType
@@ -33,18 +32,15 @@ class Engine {
             .attr("viewBox", [0, 0, width, height])
             .attr("style", "background-color: grey")
 
-
-
         // Bodies
         let $bodies = $svg.append("g")
             .attr("transform", `translate(${width / 2}, ${height - 150})`)
 
         // Cylinder
-        this.cylinder_node = $bodies.append("line")
+        $bodies.append("line")
             .attr("y1", -this.crankshaft_radius - this.rod_length - PISTON_HEIGHT)
             .attr("y2", this.crankshaft_radius - this.rod_length - PISTON_HEIGHT)
             .attr("style", `stroke: purple; stroke-width: ${PISTON_RADIUS * 2}`)
-            .node()
 
         // Crankshaft
         $bodies.append("circle")
@@ -78,19 +74,18 @@ class Engine {
         // Text infos
         this.text_infos_node = $svg.append("g")
             .attr("transform", "translate(5, 20)").node()
-
     }
 
     update(dt: DOMHighResTimeStamp) {
         let theta = dt / 1000
 
         let tdc_y = this.crankshaft_radius + this.rod_length
-        //let bdc_y = -this.crankshaft_radius + this.rod_length
-
         let piston_y = -(this.crankshaft_radius * Math.cos(theta) + Math.sqrt(Math.pow(this.rod_length, 2) - Math.pow(this.crankshaft_radius, 2) * Math.pow(Math.sin(theta), 2)))
+        let piston_yrel = tdc_y + piston_y
+        let cylinder_vol = (PISTON_RADIUS * PISTON_RADIUS * Math.PI) * (this.crankshaft_radius * 2)
+        let cylinder_ratio = piston_yrel / (2 * this.crankshaft_radius)
+        let theta_rod = -Math.asin(Math.sin(theta) * this.crankshaft_radius / this.rod_length)
 
-        let piston_yrel = tdc_y - piston_y
-        //let cylinder_ratio = 0
         // Infos
         d3.select(this.text_infos_node).selectAll("text")
             .data([
@@ -100,13 +95,13 @@ class Engine {
                 `Crankshaft lin. vel.: ${(2 * this.crankshaft_radius * Math.PI).toFixed(1)} units.s⁻¹`,
                 `Rod length: ${this.rod_length} units`,
                 `Rod / Crankshaft ratio: ${(this.rod_length / this.crankshaft_radius).toFixed(2)}`,
-                `Rod theta: TODO rad`,
+                `Rod theta: ${(theta_rod).toFixed(1)} rad`,
                 `Piston radius: ${PISTON_RADIUS} units`,
                 `Piston height: ${PISTON_HEIGHT} units`,
                 `Piston y: ${piston_yrel.toFixed(0)} units`,
-                `Cylinder volume: ${((PISTON_RADIUS * PISTON_RADIUS * Math.PI) * (this.crankshaft_radius * 2) / 1000).toFixed(1)} kunits³`,
-                `Cylinder current volume: TODO units³`,
-                `Cylinder compression ratio: TODO`,])
+                `Cylinder volume: ${(cylinder_vol / 1000).toFixed(1)} kunits³`,
+                `Cylinder current volume: ${(cylinder_vol * cylinder_ratio / 1000).toFixed(1)} kunits³`,
+                `Cylinder ratio: ${(cylinder_ratio).toFixed(3)}`,])
             .join("text")
             .attr("y", (_d, i) => i * 20)
             .text((d) => d)
@@ -121,7 +116,7 @@ class Engine {
         d3.select(this.rod_node)
             .attr("transform", [
                 `translate(0, ${piston_y})`,
-                `rotate(${(-Math.asin(Math.sin(theta) * this.crankshaft_radius / this.rod_length)) * 180 / Math.PI})`
+                `rotate(${theta_rod * 180 / Math.PI})`
             ])
 
         // Crankshaft pin
@@ -186,6 +181,5 @@ d3.select("#app").call(function ($app) {
                     })
                 })
         })
-
     })
 })
