@@ -1,4 +1,4 @@
-docutils
-Jinja2
-Unidecode
-pygments
+Django
+django_vite_plugin
+markdown2[all]
+whitenoise[brotli]

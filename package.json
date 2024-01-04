@@ -1,20 +1,20 @@
 {
-  "name": "jtremesay",
+  "name": "front",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite build --watch -m dev",
+    "dev": "vite",
     "build": "tsc && vite build"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.2",
+    "vite": "^4.4.5"
   },
   "dependencies": {
     "@types/d3": "^7.4.3",
-    "d3": "^7.8.5"
-  },
-  "devDependencies": {
-    "glob": "^10.2.6",
-    "@vitejs/plugin-vue": "^4.1.0",
-    "typescript": "^5.0.2",
-    "vite": "^4.3.9"
+    "d3": "^7.8.5",
+    "django-vite-plugin": "^4.0.0",
+    "glob": "^10.3.10"
   }
 }

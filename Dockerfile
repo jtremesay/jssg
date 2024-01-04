@@ -14,25 +14,32 @@
 #
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <https://www.gnu.org/licenses/>.
+FROM python:3.12 AS site
 
-FROM node as front
-WORKDIR /code
-COPY package.json ./
-COPY package-lock.json ./
-RUN npm install
-COPY tsconfig.json vite.config.ts ./
-COPY front/ front/
-RUN npm run build
+# Update packages and install needed stuff
+RUN apt-get update && apt-get dist-upgrade -y
+# I hate modern way of doing things
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - &&\
+    apt-get install -y nodejs
+RUN pip install -U pip setuptools wheel
 
-FROM python AS site
+# Install python & node deps
 WORKDIR /code
 COPY requirements.txt ./
-RUN pip install -U pip setuptools wheel && pip install -Ur requirements.txt
-COPY jssg.py ./
+RUN pip install -Ur requirements.txt
+COPY package.json package-lock.json ./
+RUN npm install
+
+# Copy source dir
+COPY manage.py tsconfig.json vite.config.ts ./
+COPY jssg/ jssg/
 COPY content/ content/
-COPY --from=front /code/content/static/gen/ content/static/gen/
-RUN python jssg.py --site-url https://jtremesay.org
+COPY front/ front/
+
+# Build
+RUN npm run build
+RUN python manage.py collectstatic --no-input
+RUN python manage.py gensite
 
 FROM nginx
 COPY --from=site /code/dist/ /usr/share/nginx/html/
-EXPOSE 8000

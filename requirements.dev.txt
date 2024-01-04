@@ -1,5 +1,0 @@
--r requirements.txt
-black
-ipython
-isort
-setuptools-scm
