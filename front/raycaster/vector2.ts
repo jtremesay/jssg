@@ -45,9 +45,9 @@ export class Vector2 {
 
     /**
      * @brief Get the angle in radians of the vector
-     * 
+     *
      * This is the angle formed by the point (x, y) relative to the origin
-     * 
+     *
      * @returns the angle
      */
     angle(): number {
@@ -56,10 +56,10 @@ export class Vector2 {
 
     /**
      * @brief Add two vectors
-     * 
+     *
      * new_x = this.x + o.x
      * new_y = this.y + o.y
-     * 
+     *
      * @param o The vector to add
      * @returns a new vector
      */
@@ -69,10 +69,10 @@ export class Vector2 {
 
     /**
      * @brief Substract two vectors
-     * 
+     *
      * new_x = this.x - o.x
      * new_y = this.y - o.y
-     * 
+     *
      * @param o The vector to substract
      * @returns a new vector
      */
@@ -82,10 +82,10 @@ export class Vector2 {
 
     /**
      * @brief Multiply a vector with a scalar
-     * 
+     *
      * new_x = this.x * o
      * new_y = this.y * o
-     * 
+     *
      * @param o The scalar to muliply by
      * @returns a new vector
      */
@@ -95,10 +95,10 @@ export class Vector2 {
 
     /**
      * @brief Divide a vector by a scalar
-     * 
+     *
      * new_x = this.x / o
      * new_y = this.y / o
-     * 
+     *
      * @param o The scalar to divide by
      * @returns a new vector
      */
@@ -118,7 +118,7 @@ export class Vector2 {
      * @brief Do a dot product between two vectors
      *
      * dot product = this.x * o.x + this.y * o.y
-     * 
+     *
      * @param o The other vector
      * @returns the dot product
      */
@@ -128,7 +128,7 @@ export class Vector2 {
 
     /**
      * @brief Get the abs value of the vector
-     * @returns a new vector 
+     * @returns a new vector
      */
     abs(): Vector2 {
         return new Vector2(Math.abs(this.x), Math.abs(this.y));

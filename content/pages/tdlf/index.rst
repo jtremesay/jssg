@@ -3,9 +3,9 @@ title: Théorie des langages formels
 slug: index
 ---
 
-Petites expérimentations sur la `théorie des langages <https://fr.wikipedia.org/wiki/Langage_formel>`_. On va essayer de rester léger en maths. 
+Petites expérimentations sur la `théorie des langages <https://fr.wikipedia.org/wiki/Langage_formel>`_. On va essayer de rester léger en maths.
 
-D'après `Wikipedia <https://fr.wikipedia.org/wiki/Langage_formel>`_, un langage formel, en mathématiques, en informatique et en linguistique, est un ensemble de mots. L'alphabet d'un langage formel est l'ensemble des symboles, lettres ou lexèmes qui servent à construire les mots du langage ; souvent, on suppose que cet alphabet est fini. Les mots sont des suites d'éléments de cet alphabet ; les mots qui appartiennent à un langage formel particulier sont parfois appelés mots bien formés ou formules bien formées. Un langage formel est souvent défini par une grammaire formelle, telle que les grammaires algébriques et analysé par des `automates <https://fr.wikipedia.org/wiki/Th%C3%A9orie_des_automates>`_. 
+D'après `Wikipedia <https://fr.wikipedia.org/wiki/Langage_formel>`_, un langage formel, en mathématiques, en informatique et en linguistique, est un ensemble de mots. L'alphabet d'un langage formel est l'ensemble des symboles, lettres ou lexèmes qui servent à construire les mots du langage ; souvent, on suppose que cet alphabet est fini. Les mots sont des suites d'éléments de cet alphabet ; les mots qui appartiennent à un langage formel particulier sont parfois appelés mots bien formés ou formules bien formées. Un langage formel est souvent défini par une grammaire formelle, telle que les grammaires algébriques et analysé par des `automates <https://fr.wikipedia.org/wiki/Th%C3%A9orie_des_automates>`_.
 
 Présenté comme ça, c'est très abstrait. Mais en fait, c'est très concret. Il suffit de l'interpreter très littéralement. Prenons par exemple le cas du langage formel connu sous le nom de "`français <https://fr.wikipedia.org/wiki/Fran%C3%A7ais>`_".
 

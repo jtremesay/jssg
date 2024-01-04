@@ -1,7 +1,7 @@
-**/*.egg-info/
+
 /.git/
 /.vscode/
-/output/
 /node_modules/
-/venv/
+/.direnv/
+/dist/
 *.pyc

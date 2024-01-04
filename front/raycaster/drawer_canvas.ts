@@ -56,4 +56,3 @@ export class CanvasDrawer implements Drawer {
         this.ctx.fillRect(column, this.viewport_size.y / 2 - height / 2, 1, height);
     }
 }
-

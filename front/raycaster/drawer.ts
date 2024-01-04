@@ -38,7 +38,7 @@ export interface Drawer {
 
     /**
      * @brief Draw a vertical wall portion
-     * @param column 
+     * @param column
      * @param height Height of the wall portion, in pixels
      */
     draw_wall(column: number, height: number, color: string): void;

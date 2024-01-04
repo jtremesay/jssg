@@ -39,4 +39,3 @@ Les déplacement utilisent les touches correspondant à "WASD" sur un clavier QW
 
 
 Code source disponible [ici](https://github.com/killruana/raycaster).
-

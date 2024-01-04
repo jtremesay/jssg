@@ -30,7 +30,7 @@ export function union_sdf(a: number, b: number): number {
 }
 
 /**
- * @brief Do the intersection of two areas 
+ * @brief Do the intersection of two areas
  * @param a first area
  * @param b second area
  * @returns a & b
@@ -52,9 +52,9 @@ export function differance_sdf(a: number, b: number): number {
 /**
  * @brief Compute the signed distance of a point to a circle
  * @param center Center of the circle
- * @param radius Radius of the circle 
- * @param point 
- * @returns 
+ * @param radius Radius of the circle
+ * @param point
+ * @returns
  */
 export function circle_sdf(center: Vector2, radius: number, point: Vector2): number {
     return point.sub(center).length() - radius;
@@ -62,10 +62,10 @@ export function circle_sdf(center: Vector2, radius: number, point: Vector2): num
 
 /**
  * @brief Compute the signed distance of a point to a rect
- * @param center Center of 
- * @param size 
- * @param point 
- * @returns 
+ * @param center Center of
+ * @param size
+ * @param point
+ * @returns
  */
 export function rect_sdf(center: Vector2, size: Vector2, point: Vector2): number {
     // Compute the relative position of the point to the center of the box

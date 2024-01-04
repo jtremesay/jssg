@@ -23,7 +23,7 @@ import { Scene } from "./scene";
 import { Drawer } from "./drawer";
 
 /**
- * @brief Get the distance to the nearest object 
+ * @brief Get the distance to the nearest object
  * @param point The point
  * @param direction The direction
  * @returns The distance to the nearest objects
@@ -113,4 +113,3 @@ export function render(scene: Scene, camera: Camera, drawer: Drawer, viewport_si
         }
     }
 }
-

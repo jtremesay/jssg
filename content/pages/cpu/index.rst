@@ -8,7 +8,7 @@ D'un côté, on a un programme, une suite 0 de 1. De l'autre, on a du silicium, 
 Dans cette série d'articles, nous verrons tout. Nos partirons de l’algèbre de Boole, feront un crochet par la physique quantique, verront les bases de la micro-électroniques, désignerons notre propre CPU pour finalement lui faire exécuter un programme de notre cru.
 
 1. Algèbre de Boole (TODO)
-2. Le transistor (TODO) 
+2. Le transistor (TODO)
 3. La fabrication d'une puce électronique (TODO)
 4. La conception d'une puce électronique (TODO)
 5. Le jeu d'instruction (TODO)

@@ -3,7 +3,7 @@ title: Productivity software engineer based at Montpellier, France
 slug: cv
 ---
 
-I love automation. I increase your productivity by automating stuff. 
+I love automation. I increase your productivity by automating stuff.
 
 ## Contact
 
@@ -27,7 +27,7 @@ I love automation. I increase your productivity by automating stuff.
 - rust
 - C
 - …
-- I also toyed with many languages, frameworks libs, … 
+- I also toyed with many languages, frameworks libs, …
 
 ### OS
 
@@ -104,4 +104,3 @@ Development of Android (java) and iOS applications (objective-c).
 - development of a HTML5 arcade game (javascript, ImpactJS)
 - development of an motion-based arcade game (Unity, C#c Kinect)
 - some web sites (PHP, MySQL, HTML, CSS, javascript, jQuery)
-

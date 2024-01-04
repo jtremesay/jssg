@@ -47,13 +47,13 @@ Nous voila en 2023. Au cours de cette décennie écoulée, j'ai fait assez peu d
 
 Ça commence à devenir assez gros et bordélique. Je voudrais faire du ménage dans tout ça, et moderniser. Au moins ajouter TypeScript pour profiter du typage statique et de la compilation pour détecter et corriger aux plus tôt les petites erreurs d'inattention à la con et de profiter de l'intelligence de l'IDE. NPM serait aussi un plus pour simplifier les mises à jours de nos dépendances. Puis peut-être expérimenter avec des framework UI tel que vuejs pour voir si ça peut nous simplifier la vie pour certain éléments de l'interface.
 
-Bref, le cahier des charges est simple : transitionner vers du front moderne, tout en continuant à le gérer à l'ancienne, et intégration avec l'existant parce qu'on ne va pas tout remplacer. 
+Bref, le cahier des charges est simple : transitionner vers du front moderne, tout en continuant à le gérer à l'ancienne, et intégration avec l'existant parce qu'on ne va pas tout remplacer.
 
-Ben il s'avère que l'écosystème moderne n'est ABSOLUMENT pas pensé pour être utilisé comme ça. 
+Ben il s'avère que l'écosystème moderne n'est ABSOLUMENT pas pensé pour être utilisé comme ça.
 
-Non, maintenant le front est censé être pensé comme une application à part entière et indépendante du backend et causer avec ce dernier via une api REST. 
+Non, maintenant le front est censé être pensé comme une application à part entière et indépendante du backend et causer avec ce dernier via une api REST.
 
-Sauf que cette manière de faire arrange pas du tout quand il faut intégrer avec l'existant. Surtout quand tu veux juste quelque composants par ci par là et pas une application complète. 
+Sauf que cette manière de faire arrange pas du tout quand il faut intégrer avec l'existant. Surtout quand tu veux juste quelque composants par ci par là et pas une application complète.
 
 Après beaucoup trop de prises de tête, de crises de nerfs, d'expérimetations, et d'épluchage de documentations, j'ai fini par faire fonctionner vuejs+typescript et django pour que ça marche à l'ancienne.
 
@@ -98,7 +98,7 @@ $ cat djangovuejs/package.json
     }
 }
 
-$ djangovuejs/tsconfig.json 
+$ djangovuejs/tsconfig.json
 {
     "compilerOptions": {
         "target": "ES2020",
@@ -130,7 +130,7 @@ $ djangovuejs/tsconfig.json
     ],
 }
 
-$ cat djangovuejs/vite.config.ts 
+$ cat djangovuejs/vite.config.ts
 import { globSync } from 'glob'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
@@ -156,14 +156,14 @@ export default defineConfig({
     }
 })
 
-$ cat front/main/ma_page.ts 
+$ cat front/main/ma_page.ts
 import { createApp } from 'vue'
 import App from '../src/MaPage.vue'
 
 createApp(App).mount('#app')
 ```
 
-Le dossier `front/main/` contient nos différents point d'entrées qui seront découverts dynamiquement par vitejs. `front/src/` contient le reste du code relatif au front. 
+Le dossier `front/main/` contient nos différents point d'entrées qui seront découverts dynamiquement par vitejs. `front/src/` contient le reste du code relatif au front.
 
 Pour plus de détail, la doc est votre amie :
 
