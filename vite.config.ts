@@ -1,15 +1,13 @@
-import { globSync } from 'glob'
 import { defineConfig } from 'vite'
+import { djangoVitePlugin } from 'django-vite-plugin'
+import { globSync } from 'glob'
 
-// https://vitejs.dev/config/
 export default defineConfig({
-  build: {
-    rollupOptions: {
-      input: globSync("front/main/**/*.ts"),
-      output: {
-        dir: "content/static/gen/",
-        entryFileNames: "[name].js"
-      }
-    }
-  }
-})
+    plugins: [
+        djangoVitePlugin({
+            input: [
+                ...globSync('front/main/*.ts'),
+            ]
+        })
+    ],
+});

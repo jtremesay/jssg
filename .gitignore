@@ -1,16 +1,15 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
 
-# Distribution / packaging
-*.egg-info/
-
 # Environments
-/venv/
+/.direnv/
 
 # Node
 /node_modules/
-/static/gen/
 
 # Generated site
-/content/static/gen/
 /dist/
+
+# Django
+/.hotfile⏎
+/db.sqlite3
