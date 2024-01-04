@@ -11,5 +11,5 @@ __pycache__/
 /dist/
 
 # Django
-/.hotfile⏎
+/.hotfile
 /db.sqlite3
