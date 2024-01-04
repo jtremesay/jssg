@@ -2,9 +2,7 @@ name: CI/CD
 
 on:
   push:
-    branches: [ main ]
   pull_request:
-    branches: [ main ]
 
 
 jobs:
@@ -25,9 +23,6 @@ jobs:
             type=schedule
             type=ref,event=branch
             type=ref,event=pr
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-            type=semver,pattern={{major}}
             type=sha
       -
         name: Set up Docker Buildx
@@ -51,6 +46,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: build
+    if: github.ref == 'refs/heads/main'
 
     steps:
       -
