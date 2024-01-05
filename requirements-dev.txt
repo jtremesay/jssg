@@ -1,2 +1,5 @@
 -r requirements.txt
+black
+isort
+flake8
 pre-commit
