@@ -1,15 +1,28 @@
+# JSSG - Jtremesay's Static Site Generator
+# Copyright (C) 2024 Jonathan Tremesaygues
+#
+# This program is free software: you can redistribute it and/or modify it under
+# the terms of the GNU General Public License as published by the Free Software
+# Foundation, either version 3 of the License, or (at your option) any later
+# version.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+# FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along with
+# this program. If not, see <https://www.gnu.org/licenses/>.
+
 from pathlib import Path
 from pprint import pprint
 from typing import Optional
 
 from django.conf import settings
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 from django.http import HttpRequest
-from django.test import Client, RequestFactory
 from django.urls import resolve, reverse
 
 from jssg.models import Page, Post
-from jssg.views import PageView, PostView
 
 
 def get_page(url: str, path: Optional[Path] = None) -> None:
