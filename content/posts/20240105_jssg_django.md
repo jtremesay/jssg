@@ -487,7 +487,7 @@ jobs:
 - gestion des static ? check
 - customizable ? check
 - simple ? check
-- forget & fire ? check
+- fire & forget ? check
 
 ```
 -------------------------------------------------------------------------------
