@@ -26,27 +26,47 @@ from jssg.models import Page, Post
 
 
 def get_page(url: str, path: Optional[Path] = None) -> None:
-    match = resolve(url)
+    """Download a page an store the result
+
+    :param url: the url to retrieve
+    :param path: the path to where store the retrieved content
+        The path is derived from the url if not defined
+
+    Note: the path will be prepended with settings.DIST_DIR
+    """
+    # Create the request object
     request = HttpRequest()
     request.META["HTTP_HOST"] = "jtremesay.org"
     request.method = "get"
     request.path = url
     request._get_scheme = lambda: "https"
+
+    # Retrieve the view object associated with the url
+    match = resolve(url)
+
+    # Call the view
     response = match.func(request, *match.args, **match.kwargs)
+
+    # Follow the redirection if needed
     if response.status_code in (301, 302):
         return get_page(response.url, path)
 
-    assert response.status_code == 200
+    if response.status_code != 200:
+        raise ValueError(f"Unexpected status code {response.status_code} for url {url}")
 
+    # Render the template if needed
     try:
         response.render()
     except AttributeError:
         ...
 
+    # get the output path
     if path is None:
         path = settings.DIST_DIR / url[1:]
     else:
         path = settings.DIST_DIR / path
+
+    # Create parent if needed and write the content
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_bytes(response.content)
 
