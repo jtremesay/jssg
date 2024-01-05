@@ -64,7 +64,7 @@ class Document:
                     }
                 )
             ),
-            extras=["fenced-code-blocks"],
+            extras=["fenced-code-blocks", "tables"],
         )
 
     @classmethod
