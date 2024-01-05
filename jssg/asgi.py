@@ -12,8 +12,7 @@
 #
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <https://www.gnu.org/licenses/>.
-"""
-ASGI config for proj project.
+"""ASGI config for proj project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 

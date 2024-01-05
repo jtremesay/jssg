@@ -12,8 +12,7 @@
 #
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <https://www.gnu.org/licenses/>.
-"""
-WSGI config for proj project.
+"""WSGI config for proj project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 

@@ -26,7 +26,7 @@ from jssg.models import Page, Post
 
 
 def get_page(url: str, path: Optional[Path] = None) -> None:
-    """Download a page an store the result
+    """Download a page an store the result.
 
     :param url: the url to retrieve
     :param path: the path to where store the retrieved content

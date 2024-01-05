@@ -25,7 +25,7 @@ from django.utils.text import slugify
 
 
 class Document:
-    """A document
+    """A document.
 
     A text with some metadata
 
@@ -36,11 +36,10 @@ class Document:
     BASE_DIR = settings.CONTENT_DIR
 
     def __init__(self, content: str, **metadata: Mapping[str, str]) -> None:
-        """Create a new document
+        """Create a new document.
 
         :param content: The content (body) of the document
         :param metadata: Associated metadata
-
         """
         self.content = content
         self.metadata = dict(metadata)
@@ -48,7 +47,7 @@ class Document:
 
     @property
     def content_md(self) -> str:
-        """Render the content as markdown to html
+        """Render the content as markdown to html.
 
         Note: the content will be processed by the django template engine
         before being converted to html
@@ -70,7 +69,7 @@ class Document:
 
     @classmethod
     def load(cls, path: Path) -> "Document":
-        """Load a document
+        """Load a document.
 
         :param path: Path to the document
         :return: The loaded document
@@ -125,7 +124,7 @@ class Document:
     def load_glob(
         cls, path: Optional[Path] = None, glob: str = "*.md"
     ) -> Iterator["Document"]:
-        """Load multiple document
+        """Load multiple document.
 
         :param path: The base path
         :param glob: The glob pattern
@@ -141,12 +140,12 @@ class Document:
 
 
 class Page(Document):
-    """A webpage, with a title and some content"""
+    """A webpage, with a title and some content."""
 
     BASE_DIR = settings.PAGES_DIR
 
     def __init__(self, content: str, **metadata) -> None:
-        """Create a new page
+        """Create a new page.
 
         :param content: The content (body) of the page
         :param metadata: Associated metadata
@@ -166,17 +165,17 @@ class Page(Document):
     def load_glob(
         cls, path: Optional[Path] = None, glob: str = "*.md"
     ) -> Iterator["Page"]:
-        """Overridden only to make the static typing happy"""
+        """Overridden only to make the static typing happy."""
         return super().load_glob(path, glob)
 
 
 class Post(Page):
-    """A webblog post"""
+    """A webblog post."""
 
     BASE_DIR = settings.POSTS_DIR
 
     def __init__(self, content: str, **metadata) -> None:
-        """Create a new post
+        """Create a new post.
 
         :param content: The content (body) of the page
         :param metadata: Associated metadata
@@ -188,5 +187,5 @@ class Post(Page):
     def load_glob(
         cls, path: Optional[Path] = None, glob: str = "*.md"
     ) -> Iterator["Post"]:
-        """Overridden only to make the static typing happy"""
+        """Overridden only to make the static typing happy."""
         return super().load_glob(path, glob)

@@ -13,6 +13,10 @@ repos:
     rev: 23.12.1
     hooks:
     -   id: black
+-   repo: https://github.com/PyCQA/docformatter
+    rev: v1.7.5
+    hooks:
+    -   id: docformatter
 -   repo: https://github.com/pryorda/dockerfilelint-precommit-hooks
     rev: v0.1.0
     hooks:
