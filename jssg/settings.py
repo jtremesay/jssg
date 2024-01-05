@@ -135,14 +135,19 @@ USE_I18N = True
 
 USE_TZ = True
 
+# JSSG
+JSSG_CONTENT_DIR = BASE_DIR / "content"
+JSSG_PAGES_DIR = JSSG_CONTENT_DIR / "pages"
+JSSG_POSTS_DIR = JSSG_CONTENT_DIR / "posts"
+JSSG_STATIC_DIR = JSSG_CONTENT_DIR / "static"
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
-
 STATIC_URL = "/static/"
 
 DIST_DIR = BASE_DIR / "dist"
 STATIC_ROOT = DIST_DIR / "static"
+STATICFILES_DIRS = [JSSG_STATIC_DIR]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
@@ -157,7 +162,3 @@ if not DEBUG and not VITE_MANIFEST_FILE.exists():
 DJANGO_VITE_PLUGIN = {
     "MANIFEST": VITE_MANIFEST_FILE,
 }
-
-CONTENT_DIR = BASE_DIR / "content"
-PAGES_DIR = CONTENT_DIR / "pages"
-POSTS_DIR = CONTENT_DIR / "posts"
