@@ -42,6 +42,13 @@ DEBUG = environ.get("DJANGO_DEBUG", "false") == "true"
 ALLOWED_HOSTS = ["jtremesay.org", "localhost"]
 
 
+# JSSG
+JSSG_CONTENT_DIR = BASE_DIR / "content"
+JSSG_PAGES_DIR = JSSG_CONTENT_DIR / "pages"
+JSSG_POSTS_DIR = JSSG_CONTENT_DIR / "posts"
+JSSG_TEMPLATES_DIR = JSSG_CONTENT_DIR / "templates"
+JSSG_STATIC_DIR = JSSG_CONTENT_DIR / "static"
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -71,7 +78,7 @@ ROOT_URLCONF = "jssg.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [JSSG_TEMPLATES_DIR],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -134,12 +141,6 @@ TIME_ZONE = "UTC"
 USE_I18N = True
 
 USE_TZ = True
-
-# JSSG
-JSSG_CONTENT_DIR = BASE_DIR / "content"
-JSSG_PAGES_DIR = JSSG_CONTENT_DIR / "pages"
-JSSG_POSTS_DIR = JSSG_CONTENT_DIR / "posts"
-JSSG_STATIC_DIR = JSSG_CONTENT_DIR / "static"
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
