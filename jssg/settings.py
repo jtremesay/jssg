@@ -149,14 +149,7 @@ STATIC_ROOT = DIST_DIR / "static"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-VITE_MANIFEST_FILE = STATIC_ROOT / "manifest.json"
-if not DEBUG and not VITE_MANIFEST_FILE.exists():
-    STATIC_ROOT.mkdir(parents=True, exist_ok=True)
-    VITE_MANIFEST_FILE.write_text("{}")
-
-DJANGO_VITE_PLUGIN = {
-    "MANIFEST": STATIC_ROOT / "manifest.json",
-}
+DJANGO_VITE_PLUGIN = {}
 
 CONTENT_DIR = BASE_DIR / "content"
 PAGES_DIR = CONTENT_DIR / "pages"
