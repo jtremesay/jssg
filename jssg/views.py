@@ -35,13 +35,6 @@ class PageView(TemplateView):
     page_cls = Page
     slug: Optional[str] = None
 
-    def setup(self, request: HttpRequest, *args: Any, **kwargs: Any) -> None:
-        try:
-            self.slug = kwargs["slug"]
-        except KeyError:
-            ...
-        return super().setup(request, *args, **kwargs)
-
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         ctx = super().get_context_data(**kwargs)
         ctx["object"] = self.page_cls.load_page_with_slug(self.slug)
