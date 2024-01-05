@@ -36,6 +36,10 @@ class PageView(TemplateView):
     slug: Optional[str] = None
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        try:
+            self.slug = kwargs["slug"]
+        except:
+            ...
         ctx = super().get_context_data(**kwargs)
         ctx["object"] = self.page_cls.load_page_with_slug(self.slug)
         return ctx
