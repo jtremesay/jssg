@@ -143,14 +143,6 @@ if not DEBUG and not VITE_MANIFEST_FILE.exists():
 
 DJANGO_VITE_PLUGIN = {
     "MANIFEST": STATIC_ROOT / "manifest.json",
-    "WS_CLIENT": "@vite/client",
-    "DEV_MODE": DEBUG,
-    "BUILD_DIR": STATIC_ROOT,
-    "BUILD_URL_PREFIX": STATIC_URL,
-    "SERVER": {"HTTPS": False, "HOST": "127.0.0.1", "PORT": 5173},
-    "JS_ATTRS": {"type": "module"},
-    "CSS_ATTRS": {"rel": "stylesheet", "type": "text/css"},
-    "STATIC_LOOKUP": True,
 }
 
 CONTENT_DIR = BASE_DIR / "content"
