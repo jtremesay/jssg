@@ -25,10 +25,9 @@ RUN pip install -U pip setuptools wheel
 
 # Install python & node deps
 WORKDIR /code
-COPY requirements.txt ./
-RUN pip install -Ur requirements.txt
-COPY package.json package-lock.json ./
-RUN npm install
+COPY requirements.txt package.json package-lock.json ./
+RUN pip install -Ur requirements.txt \
+    && npm install
 
 # Copy source dir
 COPY manage.py tsconfig.json vite.config.ts ./
@@ -37,9 +36,9 @@ COPY content/ content/
 COPY front/ front/
 
 # Build
-RUN npm run build
-RUN python manage.py collectstatic --no-input
-RUN python manage.py gensite
+RUN npm run build \
+    && python manage.py collectstatic --no-input \
+    && python manage.py gensite
 
 FROM nginx:mainline
 COPY --from=site /code/dist/ /usr/share/nginx/html/
