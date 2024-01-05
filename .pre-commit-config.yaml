@@ -17,3 +17,7 @@ repos:
     rev: v0.1.0
     hooks:
     -   id: dockerfilelint
+-   repo: https://github.com/IamTheFij/docker-pre-commit
+    rev: v3.0.1
+    hooks:
+    -   id: docker-compose-check
