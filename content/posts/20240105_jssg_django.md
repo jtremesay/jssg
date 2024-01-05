@@ -207,7 +207,7 @@ Quelqu'uns de mes projets :
 
 ```python
 class PageView(TemplateView):
-    template_name = "jssg/page.html"
+    template_name = "page.html"
     page_cls = Page
     slug: Optional[str] = None
 
@@ -222,7 +222,7 @@ class PageView(TemplateView):
 
 
 class PostView(PageView):
-    template_name = "jssg/post.html"
+    template_name = "post.html"
     page_cls = Post
 ```
 
@@ -232,7 +232,7 @@ Comme vous vous en doutez à la vue de mon site, les templates sont ultra minima
 
 ```html
 {% verbatim %}
-{% extends "jssg/base.html" %}
+{% extends "base.html" %}
 
 {% block "content" %}
 Publié le {{ object.timestamp|date:"Y-m-d" }}.
