@@ -420,6 +420,7 @@ networks:
 Github Actions.
 
 ```yaml
+{% verbatim %}
 name: CI/CD
 
 on:
@@ -473,10 +474,12 @@ jobs:
         with:
           webhook_url: ${{ secrets.WEBHOOK_URL }}
           verify_ssl: false
+{% endverbatim %}
 ```
 
 ## Conclusion
 
+- site static ? check
 - chouette environement de dev ? check
 - integration de vite/typescript ? check
 - écriture du contenu en pas html ? check
