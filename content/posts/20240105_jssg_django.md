@@ -9,10 +9,10 @@ Pour rappel, mes besoins étaient :
 
 - je veux un site statique en plain old html
 - je ne veux pas écrire de html
-- je veux que le déployement soit en mode "fire & forget" (CI/CD on push) 
+- je veux que le déployement soit en mode "fire & forget" (CI/CD on push)
 - je veux toujours faire des trucs tordus qui ne rentrent pas dans les cases des solutions clés en main existantes.
 
-Dans l'épisode [précédent]({% url 'post' 'jssg' %}), j'avais bricolé un [pelican](https://getpelican.com/) du pauvre à truc à base de python + restructuredtext + jinja pour gérer le contenue et vite + typescript pour le front. 
+Dans l'épisode [précédent]({% url 'post' 'jssg' %}), j'avais bricolé un [pelican](https://getpelican.com/) du pauvre à truc à base de python + restructuredtext + jinja pour gérer le contenue et vite + typescript pour le front.
 
 Ça marche super bien pour générer la version finale du site. Mais c'était super désagréable d'écrire du contenu ou de travailler sur les animations en typescript. La faute à l'absence d'un auto-rebuild à la volée pour simplifier la vie. Mais c'est super relou à coder ça :P
 
@@ -247,7 +247,7 @@ La propriété `Page.content_md` s'occupe de générer à la volée le HTML à p
 
 ```python
 class Post:
-    # snip 
+    # snip
 
     @property
     def content_md(self):
@@ -461,7 +461,7 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           cache-from: type=registry,ref=killruana/jtremesay.org:buildcache
           cache-to: type=registry,ref=killruana/jtremesay.org:buildcache,mode=max
-  
+
   deploy:
     runs-on: ubuntu-latest
     needs: build
