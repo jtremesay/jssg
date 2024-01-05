@@ -125,7 +125,7 @@ dist/
 
 ## Le contenu
 
-Le contenu (page et posts) est maintenant écrit en markdown. La précédente version de JSSG utilisait restructuredtext, mais je me suis rendu compte à l'usage que je détestais :D
+Le contenu (pages et posts) est maintenant écrit en markdown. La précédente version de JSSG utilisait restructuredtext, mais je me suis rendu compte à l'usage que je détestais :D
 
 Chaque document commence par un block de méta-data encadrés par des `---`. Il me sert notamment à renseigner le nom ou le slug de la page, et la date de publication des posts.
 
