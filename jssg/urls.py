@@ -11,7 +11,7 @@ def register_pages(urlpatterns: MutableSequence[URLPattern]):
     pages = Page.load_glob()
     urlpatterns.extend(
         path(
-            f"pages/{str(page.slug)}.html",
+            f"pages/{page.slug}.html",
             views.PageView.as_view(slug=page.slug),
             name=f"page_{page.slug}",
         )
@@ -23,7 +23,7 @@ def register_posts(urlpatterns: MutableSequence[URLPattern]):
     posts = Post.load_glob()
     urlpatterns.extend(
         path(
-            f"posts/{str(post.slug)}.html",
+            f"posts/{post.slug}.html",
             views.PostView.as_view(slug=post.slug),
             name=f"post_{post.slug}",
         )
