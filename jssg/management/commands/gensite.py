@@ -14,7 +14,6 @@
 # this program. If not, see <https://www.gnu.org/licenses/>.
 
 from pathlib import Path
-from pprint import pprint
 from typing import Optional
 
 from django.conf import settings

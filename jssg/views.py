@@ -52,7 +52,7 @@ class PageView(TemplateView):
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         try:
             self.slug = kwargs["slug"]
-        except:
+        except KeyError:
             ...
         ctx = super().get_context_data(**kwargs)
         ctx["object"] = self.page_cls.load_page_with_slug(self.slug)
