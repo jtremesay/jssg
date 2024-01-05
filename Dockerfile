@@ -17,10 +17,10 @@
 FROM python:3.12 AS site
 
 # Update packages and install needed stuff
-RUN apt-get update && apt-get dist-upgrade -y
-# I hate modern way of doing things
-RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - &&\
-    apt-get install -y nodejs
+RUN apt-get update \
+    && curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get install -y --no-install-recommends nodejs \
+    && rm -rf /var/lib/apt/lists/*
 RUN pip install -U pip setuptools wheel
 
 # Install python & node deps
@@ -41,5 +41,5 @@ RUN npm run build
 RUN python manage.py collectstatic --no-input
 RUN python manage.py gensite
 
-FROM nginx
+FROM nginx:mainline
 COPY --from=site /code/dist/ /usr/share/nginx/html/
