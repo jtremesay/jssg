@@ -19,7 +19,7 @@ def get_page(url: str, path: Optional[Path] = None) -> None:
     request.method = "get"
     request.path = url
     request._get_scheme = lambda: "https"
-    response = match.func(request)
+    response = match.func(request, *match.args, **match.kwargs)
     if response.status_code in (301, 302):
         return get_page(response.url, path)
 
@@ -40,15 +40,11 @@ def get_page(url: str, path: Optional[Path] = None) -> None:
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        get_page("/", "index.html")
-        get_page("/atom.xml")
+        get_page(reverse("index"), "index.html")
+        get_page(reverse("atom_feed"))
         for page in Page.load_glob():
             if page.slug == "index":
                 continue
-
-            url = reverse("page", args=(page.slug,))
-            get_page(url)
-
+            get_page(reverse("page", args=(page.slug,)))
         for post in Post.load_glob():
-            url = reverse("post", args=(post.slug,))
-            get_page(url)
+            get_page(reverse("post", args=(post.slug,)))
