@@ -5,12 +5,12 @@ slug: index
 
 ## Pages
 
-- [Images générés par ordinateur]({% url 'page_cgi' %})
-- [Un raycaster façon Wolfenstein3D en pur typescript]({% url 'page_raycaster' %})
-- [Algorithmes de tris animés]({% url 'page_tris-animes' %})
-- [Calculer Pi au casino]({% url 'page_pi-monte-carlo' %})
-- [Scada player]({% url 'page_scadaplayer' %}) : un outil pour visualiser les données issues d'une éolienne
-- [Crankshaft]({% url 'page_crankshaft' %}) : Simulation de systèmes vilebrequin / bielle / piston
+- [Images générés par ordinateur]({% url 'page' 'cgi' %})
+- [Un raycaster façon Wolfenstein3D en pur typescript]({% url 'page' 'raycaster' %})
+- [Algorithmes de tris animés]({% url 'page' 'tris-animes' %})
+- [Calculer Pi au casino]({% url 'page' 'pi-monte-carlo' %})
+- [Scada player]({% url 'page' 'scadaplayer' %}) : un outil pour visualiser les données issues d'une éolienne
+- [Crankshaft]({% url 'page' 'crankshaft' %}) : Simulation de systèmes vilebrequin / bielle / piston
 
 ## Projets
 

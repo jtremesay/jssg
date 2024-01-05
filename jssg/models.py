@@ -1,7 +1,22 @@
+# JSSG - Jtremesay's Static Site Generator
+# Copyright (C) 2024 Jonathan Tremesaygues
+#
+# This program is free software: you can redistribute it and/or modify it under
+# the terms of the GNU General Public License as published by the Free Software
+# Foundation, either version 3 of the License, or (at your option) any later
+# version.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+# FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along with
+# this program. If not, see <https://www.gnu.org/licenses/>.
+
 import datetime
 from io import StringIO
 from pathlib import Path
-from typing import Iterator, Optional
+from typing import Iterator, Mapping, Optional
 
 import markdown2
 from django.conf import settings
@@ -10,8 +25,6 @@ from django.utils.text import slugify
 
 
 class Document:
-    BASE_DIR = settings.CONTENT_DIR
-
     """A document
 
     A text with some metadata
@@ -19,13 +32,29 @@ class Document:
     This is a base class for more specialized document types
     """
 
-    def __init__(self, content: str, **metadata) -> None:
+    # Default dir to search document
+    BASE_DIR = settings.CONTENT_DIR
+
+    def __init__(self, content: str, **metadata: Mapping[str, str]) -> None:
+        """Create a new document
+
+        :param content: The content (body) of the document
+        :param metadata: Associated metadata
+
+        """
         self.content = content
         self.metadata = dict(metadata)
         self.path = metadata["path"]
 
     @property
-    def content_md(self):
+    def content_md(self) -> str:
+        """Render the content as markdown to html
+
+        Note: the content will be processed by the django template engine
+        before being converted to html
+
+        :return: the rendered document
+        """
         return markdown2.markdown(
             Template(self.content).render(
                 Context(
@@ -117,6 +146,11 @@ class Page(Document):
     BASE_DIR = settings.PAGES_DIR
 
     def __init__(self, content: str, **metadata) -> None:
+        """Create a new page
+
+        :param content: The content (body) of the page
+        :param metadata: Associated metadata
+        """
         super().__init__(content, **metadata)
         self.title = metadata["title"]
         try:
@@ -132,6 +166,7 @@ class Page(Document):
     def load_glob(
         cls, path: Optional[Path] = None, glob: str = "*.md"
     ) -> Iterator["Page"]:
+        """Overridden only to make the static typing happy"""
         return super().load_glob(path, glob)
 
 
@@ -141,6 +176,11 @@ class Post(Page):
     BASE_DIR = settings.POSTS_DIR
 
     def __init__(self, content: str, **metadata) -> None:
+        """Create a new post
+
+        :param content: The content (body) of the page
+        :param metadata: Associated metadata
+        """
         super().__init__(content, **metadata)
         self.timestamp = datetime.datetime.fromisoformat(metadata["date"])
 
@@ -148,4 +188,5 @@ class Post(Page):
     def load_glob(
         cls, path: Optional[Path] = None, glob: str = "*.md"
     ) -> Iterator["Post"]:
+        """Overridden only to make the static typing happy"""
         return super().load_glob(path, glob)

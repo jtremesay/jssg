@@ -1,3 +1,17 @@
+# JSSG - Jtremesay's Static Site Generator
+# Copyright (C) 2024 Jonathan Tremesaygues
+#
+# This program is free software: you can redistribute it and/or modify it under
+# the terms of the GNU General Public License as published by the Free Software
+# Foundation, either version 3 of the License, or (at your option) any later
+# version.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+# FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along with
+# this program. If not, see <https://www.gnu.org/licenses/>.
 """
 Django settings for proj project.
 
@@ -10,6 +24,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
+from os import environ
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -23,7 +38,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-+lnz3sdad49!x)zq6fg_fah1qdw-01!7y!8)dahyw7hxjgnl$0"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = environ.get("DJANGO_DEBUG", "false") == "true"
 
 ALLOWED_HOSTS = ["jtremesay.org", "localhost"]
 
@@ -105,7 +120,7 @@ AUTH_PASSWORD_VALIDATORS = [
 STORAGES = {
     # ...
     "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+        "BACKEND": "whitenoise.storage.ManifestStaticFilesStorage",
     },
 }
 
@@ -142,14 +157,6 @@ if not DEBUG and not VITE_MANIFEST_FILE.exists():
 
 DJANGO_VITE_PLUGIN = {
     "MANIFEST": STATIC_ROOT / "manifest.json",
-    "WS_CLIENT": "@vite/client",
-    "DEV_MODE": DEBUG,
-    "BUILD_DIR": STATIC_ROOT,
-    "BUILD_URL_PREFIX": STATIC_URL,
-    "SERVER": {"HTTPS": False, "HOST": "127.0.0.1", "PORT": 5173},
-    "JS_ATTRS": {"type": "module"},
-    "CSS_ATTRS": {"rel": "stylesheet", "type": "text/css"},
-    "STATIC_LOOKUP": True,
 }
 
 CONTENT_DIR = BASE_DIR / "content"
