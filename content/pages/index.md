@@ -21,7 +21,14 @@ Quelqu'uns de mes projets :
 - [kFPGA](https://github.com/jtremesay/kfpga) : une architecture FPGA opensource (openhardware?).
 - [MPS](https://github.com/jtremesay/mpssim) : Un processor MIPS 8 bits.
 
-## Articles
+## Liens
+
+- [Solène'%](https://dataswamp.org/~solene/), une amie qui fait des choses bizarres avec openbsd, qubeos et nixos sur des thinkpads, entre autre chose. Mon pendant administration système
+- [Fabien Sanglard](https://fabiensanglard.net/), c'est notamment grace à ce site et ses articles que j'ai pu comprendre des trucs sur les moteurs de jeux vidéos. Et que je suis devenu le développeur que je suis aujourd'hui. Merci M. Sanglard de m'avoir permis de faire [ça]({% url 'page' 'raycaster' %}) !
+- [Portefolio](https://s-keyp.github.io/new_portfolio/) de Padawan, mon alternant
+
+
+## Blog
 
 {% for post in posts %}
 - [{{ post.timestamp|date:"Y-m-d" }}]({% url 'post' post.slug %}): {{ post.title }}{% endfor %}
