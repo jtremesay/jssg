@@ -1,31 +1,18 @@
 ---
-title: Bienvenue sur mon site !
+title: My super web site
 slug: index
 ---
 
-## Pages
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Varius vel pharetra vel turpis. Enim blandit volutpat maecenas volutpat blandit aliquam etiam erat velit. Sed vulputate odio ut enim blandit volutpat maecenas volutpat. Adipiscing bibendum est ultricies integer quis auctor elit sed. Faucibus vitae aliquet nec ullamcorper sit. Eget mi proin sed libero enim sed. Consequat semper viverra nam libero justo laoreet sit amet. Phasellus vestibulum lorem sed risus ultricies. Turpis egestas maecenas pharetra convallis posuere. Egestas integer eget aliquet nibh praesent tristique magna sit. Tincidunt nunc pulvinar sapien et ligula ullamcorper. Magna etiam tempor orci eu lobortis elementum nibh tellus. At elementum eu facilisis sed odio. Sed id semper risus in hendrerit gravida.
 
-- [Images générés par ordinateur]({% url 'page' 'cgi' %})
-- [Un raycaster façon Wolfenstein3D en pur typescript]({% url 'page' 'raycaster' %})
-- [Algorithmes de tris animés]({% url 'page' 'tris-animes' %})
-- [Calculer Pi au casino]({% url 'page' 'pi-monte-carlo' %})
-- [Scada player]({% url 'page' 'scadaplayer' %}) : un outil pour visualiser les données issues d'une éolienne
-- [Crankshaft]({% url 'page' 'crankshaft' %}) : Simulation de systèmes vilebrequin / bielle / piston
 
-## Projets
+```python
+print("hello, world")
+```
 
-Quelqu'uns de mes projets :
-
-- [Raytracer](https://github.com/jtremesay/raytracer) : Itération suivante, un raytraceur en rust.
-- [Mathsworld](https://mathsworld.jtremesay.org/) ([sources](https://github.com/jtremesay/mathsworld)) : Le next level du projet précédent : un générateur de shader WebGL raytraçant une scène décrite en s-expression
-- [kFPGA](https://github.com/jtremesay/kfpga) : une architecture FPGA opensource (openhardware?).
-- [MPS](https://github.com/jtremesay/mpssim) : Un processor MIPS 8 bits.
-
-## Liens
-
-- [Solène'%](https://dataswamp.org/~solene/), une amie qui fait des choses bizarres avec openbsd, qubeos et nixos sur des thinkpads, entre autre chose. Mon pendant administration système
-- [Fabien Sanglard](https://fabiensanglard.net/), c'est notamment grace à ce site et ses articles que j'ai pu comprendre des trucs sur les moteurs de jeux vidéos. Et que je suis devenu le développeur que je suis aujourd'hui. Merci M. Sanglard de m'avoir permis de faire [ça]({% url 'page' 'raycaster' %}) !
-- [Portefolio](https://s-keyp.github.io/new_portfolio/) de Padawan, mon alternant
+- Scelerisque eleifend donec pretium vulputate sapien nec sagittis. Morbi tristique senectus et netus et malesuada fames ac turpis.
+- Consectetur libero id faucibus nisl tincidunt eget. Eu feugiat pretium nibh ipsum consequat nisl vel pretium. Non pulvinar neque laoreet suspendisse interdum consectetur.
+- Id porta nibh venenatis cras sed felis eget. Nisl vel pretium lectus quam id.
 
 
 ## Blog

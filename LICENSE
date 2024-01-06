@@ -2,9 +2,5 @@
   the GNU GENERAL PUBLIC LICENSE -- see the 'COPYING' file in this
   directory for details.
 
-* The data needed to generate the site (like HTML templates, CSS designs, …)  not explicitly licensed otherwise, are licensed under
-   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License -- see the 'COPYING.CC-BY-NC-SA' file in this directory for details.
-
-* The editorial content (mainly directories 'content/pages' and 'content/posts')
-not explicitly licensed otherwise, are licensed under
-   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License -- see the 'COPYING.CC-BY-NC-SA' file in this directory for details.
+* the sample content (folder `content`) not explicitly licensed otherwise, are licensed under
+   CC0 1.0 Universal -- see the 'COPYING.CC0' file in this directory for details.

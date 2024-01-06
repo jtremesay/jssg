@@ -39,7 +39,7 @@ SECRET_KEY = "django-insecure-+lnz3sdad49!x)zq6fg_fah1qdw-01!7y!8)dahyw7hxjgnl$0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = environ.get("DJANGO_DEBUG", "false") == "true"
 
-ALLOWED_HOSTS = ["jtremesay.org", "localhost"]
+ALLOWED_HOSTS = ["exemple.org", "localhost"]
 
 
 # JSSG
@@ -55,7 +55,6 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "whitenoise.runserver_nostatic",
     "django.contrib.staticfiles",
-    "django_vite_plugin",
     "jssg",
 ]
 
@@ -133,12 +132,3 @@ STATICFILES_DIRS = [JSSG_STATIC_DIR]
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
-VITE_MANIFEST_FILE = STATIC_ROOT / ".vite" / "manifest.json"
-if not DEBUG and not VITE_MANIFEST_FILE.exists():
-    VITE_MANIFEST_FILE.parent.mkdir(parents=True, exist_ok=True)
-    VITE_MANIFEST_FILE.write_text("{}")
-
-DJANGO_VITE_PLUGIN = {
-    "MANIFEST": VITE_MANIFEST_FILE,
-}

@@ -4,12 +4,8 @@ __pycache__/
 # Environments
 /.direnv/
 
-# Node
-/node_modules/
-
 # Generated site
 /dist/
 
 # Django
-/.hotfile
 /db.sqlite3

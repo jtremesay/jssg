@@ -35,7 +35,7 @@ def get_page(url: str, path: Optional[Path] = None) -> None:
     """
     # Create the request object
     request = HttpRequest()
-    request.META["HTTP_HOST"] = "jtremesay.org"
+    request.META["HTTP_HOST"] = "exemple.org"
     request.method = "get"
     request.path = url
     request._get_scheme = lambda: "https"
