@@ -30,8 +30,7 @@ COPY jssg/ jssg/
 COPY content/ content/
 
 # Build
-RUN python manage.py collectstatic --no-input \
-    && python manage.py gensite
+RUN ./manage.py distill-local --collectstatic --force dist
 
 FROM nginx:mainline
 COPY --from=site /code/dist/ /usr/share/nginx/html/
