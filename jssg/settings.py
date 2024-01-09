@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "whitenoise.runserver_nostatic",
     "django.contrib.staticfiles",
+    "django_distill",
     "jssg",
 ]
 
