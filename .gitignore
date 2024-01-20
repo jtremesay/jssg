@@ -7,5 +7,10 @@ __pycache__/
 # Generated site
 /dist/
 
+# Node
+/node_modules/
+/.hotfile
+
 # Django
 /db.sqlite3
+/static

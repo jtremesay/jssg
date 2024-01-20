@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     "whitenoise.runserver_nostatic",
     "django.contrib.staticfiles",
     "django_distill",
+    "django_vite_plugin",
     "jssg",
 ]
 
@@ -126,10 +127,19 @@ USE_TZ = True
 STATIC_URL = "/static/"
 
 DIST_DIR = BASE_DIR / "dist"
-STATIC_ROOT = DIST_DIR / "static"
+STATIC_ROOT = BASE_DIR / "static"
 STATICFILES_DIRS = [JSSG_STATIC_DIR]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+VITE_MANIFEST_FILE = STATIC_ROOT / ".vite" / "manifest.json"
+if not DEBUG and not VITE_MANIFEST_FILE.exists():
+    VITE_MANIFEST_FILE.parent.mkdir(parents=True, exist_ok=True)
+    VITE_MANIFEST_FILE.write_text("{}")
+
+DJANGO_VITE_PLUGIN = {
+    "MANIFEST": VITE_MANIFEST_FILE,
+}

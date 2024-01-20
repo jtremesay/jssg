@@ -17,20 +17,26 @@
 FROM python:3.12 AS site
 
 # Update packages and install needed stuff
+RUN apt-get update \
+    && curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get install -y --no-install-recommends nodejs \
+    && rm -rf /var/lib/apt/lists/*
 RUN pip install -U pip setuptools wheel
 
 # Install python & node deps
 WORKDIR /code
-COPY requirements.txt ./
-RUN pip install -Ur requirements.txt
+COPY requirements.txt package.json package-lock.json ./
+RUN pip install -Ur requirements.txt \
+    && npm install
 
 # Copy source dir
-COPY manage.py ./
+COPY manage.py tsconfig.json vite.config.ts ./
 COPY jssg/ jssg/
 COPY content/ content/
 
 # Build
-RUN ./manage.py distill-local --collectstatic --force dist
+RUN npm run build \
+    && ./manage.py distill-local --collectstatic --force dist
 
 FROM nginx:mainline
 COPY --from=site /code/dist/ /usr/share/nginx/html/
