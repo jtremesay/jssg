@@ -1,0 +1,17 @@
+{
+  "name": "front",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.2",
+    "vite": "^5.0.11",
+    "glob": "^10.3.10",
+    "django-vite-plugin": "^4.0.0"
+  },
+  "dependencies": {}
+}
