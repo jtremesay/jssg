@@ -9,7 +9,7 @@
   },
   "devDependencies": {
     "typescript": "^5.0.2",
-    "vite": "^5.0.11",
+    "vite": "^5.1.5",
     "glob": "^10.3.10",
     "django-vite-plugin": "^4.0.0"
   },
