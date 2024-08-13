@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = 'setuptools.build_meta'
+
+[project]
+name = "jssg"
+version = "0.1"
+authors = [
+    { "name" = "Jonathan Tremesaygues", "email" = "jonathan.tremesaygues@slaanesh.org" },
+]
+description = "A static site generator for Django"
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Operating System :: OS Independent",
+    "Framework :: Django",
+]
+dependencies = ["Django", "django-distill", "markdown2[all]"]
+
+[project.urls]
+Homepage = "https://github.com/jtremesay/jssg"
+Issues = "https://github.com/jtremesay/jssg/issues"
