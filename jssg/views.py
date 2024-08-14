@@ -24,7 +24,7 @@ from django.urls import reverse
 from django.utils.feedgenerator import Atom1Feed
 from django.views.generic import DetailView
 
-from jssg.models import Page, Post
+from jssg.models import Page, Post, find_posts, get_page, get_post
 
 
 class PostFeedsView(Feed):
@@ -34,9 +34,7 @@ class PostFeedsView(Feed):
     feed_type = Atom1Feed
 
     def items(self) -> list[Post]:
-        return sorted(
-            Post.load_posts_from_apps(), key=lambda p: p.timestamp, reverse=True
-        )[:20]
+        return sorted(find_posts(), key=lambda p: p.timestamp, reverse=True)[:20]
 
     def item_title(self, post: Post) -> str:
         return post.title
@@ -56,7 +54,7 @@ class PageView(DetailView):
     template_name = "page.html"
 
     def get_object(self, queryset: QuerySet[Any] | None = None) -> Model:
-        return self.model.load_page_with_slug(self.kwargs["slug"])
+        return get_page(self.kwargs["slug"])
 
 
 class IndexView(PageView):
@@ -73,4 +71,4 @@ class PostView(PageView):
     template_name = "post.html"
 
     def get_object(self, queryset: QuerySet[Any] | None = None) -> Model:
-        return self.model.load_post_with_slug(self.kwargs["slug"])
+        return get_post(self.kwargs["slug"])

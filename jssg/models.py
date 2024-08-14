@@ -19,7 +19,7 @@ from pathlib import Path
 from typing import Iterator, Mapping
 
 import markdown2
-from django.apps import AppConfig, apps
+from django.apps import apps
 from django.template import Context, Template
 from django.utils.text import slugify
 
@@ -56,7 +56,7 @@ class Document:
                 Context(
                     {
                         "posts": sorted(
-                            Post.load_posts_from_apps(),
+                            find_posts(),
                             key=lambda p: p.timestamp,
                             reverse=True,
                         )
@@ -119,21 +119,6 @@ class Document:
 
         return cls(content=content.getvalue(), **metadata)
 
-    @classmethod
-    def load_from_path(cls, path: Path) -> Iterator["Document"]:
-        for doc_path in path.glob("*.md"):
-            yield cls.load(doc_path)
-
-    @classmethod
-    def load_from_app(cls, app: AppConfig, sub_path: Path) -> Iterator["Document"]:
-        path = Path(app.path) / "content" / sub_path
-        yield from cls.load_from_path(path)
-
-    @classmethod
-    def load_from_apps(cls, sub_path: Path) -> Iterator["Document"]:
-        for app in apps.get_app_configs():
-            yield from cls.load_from_app(app, sub_path)
-
 
 class Page(Document):
     """A webpage, with a title and some content."""
@@ -151,14 +136,6 @@ class Page(Document):
         except KeyError:
             self.slug = slugify(self.title)
 
-    @classmethod
-    def load_page_with_slug(cls, slug: str) -> "Page":
-        return next(filter(lambda p: p.slug == slug, cls.load_pages_from_apps()))
-
-    @classmethod
-    def load_pages_from_apps(cls) -> Iterator["Page"]:
-        yield from cls.load_from_apps("pages")
-
 
 class Post(Page):
     """A webblog post."""
@@ -172,10 +149,38 @@ class Post(Page):
         super().__init__(content, **metadata)
         self.timestamp = datetime.datetime.fromisoformat(metadata["date"])
 
-    @classmethod
-    def load_posts_from_apps(cls) -> Iterator["Post"]:
-        yield from cls.load_from_apps("posts")
 
-    @classmethod
-    def load_post_with_slug(cls, slug: str) -> "Page":
-        return next(filter(lambda p: p.slug == slug, cls.load_posts_from_apps()))
+def find_documents(sub_path: Path, doc_class: type[Document]) -> Iterator[Document]:
+    """Find all the documents in the apps."""
+    for app in apps.get_app_configs():
+        path = Path(app.path) / "content" / sub_path
+        for doc_path in path.glob("*.md"):
+            yield doc_class.load(doc_path)
+
+
+def find_pages() -> Iterator[Post]:
+    """Find all the posts in the apps."""
+    yield from find_documents(Path("pages"), Page)
+
+
+def find_posts() -> Iterator[Post]:
+    """Find all the posts in the apps."""
+    yield from find_documents(Path("posts"), Post)
+
+
+def get_page(slug: str) -> Page:
+    """Get a page by its slug."""
+    for page in find_pages():
+        if page.slug == slug:
+            return page
+
+    raise ValueError(f"Page {slug} not found")
+
+
+def get_post(slug: str) -> Post:
+    """Get a post by its slug."""
+    for post in find_posts():
+        if post.slug == slug:
+            return post
+
+    raise ValueError(f"Post {slug} not found")
