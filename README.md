@@ -64,12 +64,82 @@ urlpatterns = [
 ]
 ```
 
-##  Usage
-
-TODO. 
-
-Be since I eat my own dog food, you can always look at how I use it in the jtremesay.org [repo](https://github.com/jtremesay/jtremesay.org).
-
 ## Configuration
 
-TODO.
+You need to set the following variables in your `settings.py`:
+
+- `JSSG_RSS_LINK: str`: The base URL of your site, used in the rss feed
+- `JSSG_RSS_TITLE: str`: The description of your site in the rss feed
+
+
+## Content
+
+Just put your md files in `yourapp/content/posts` and `yourapp/content/pages` 
+and JSSG will autodiscover them.
+
+You have full access to the django template engine in the markdown, have fun!
+
+
+### Page
+
+Ex: 
+
+```markdown
+---
+title: Hello, world!
+slug: index
+---
+
+## bla bla bla
+
+bla bla bla
+```
+
+### Post
+
+Ex:
+
+```markdown
+---
+title: Hello, world
+date: 2023-05-31T20:00+02:00
+---
+
+bla bla bla
+```
+
+## Templating
+
+You need to provide the `page.html` and `post.html` template. 
+
+Ex:
+
+```html
+{% extends "base.html" %}
+
+{% block "content" %}
+Published {{ object.timestamp|date:"Y-m-d" }}.
+
+<h1>{{ object.title }}</h1>
+{{ object.content_md|safe }}
+{% endblock %}
+```
+
+##  Usage
+
+### Local
+
+Just use the good old `./manage.py runserver` and build your site like a regular
+django project
+
+### Generate site
+
+When your are api with your site, you can generate the static version with 
+distill:
+
+```shell
+./manage.py distill-local --collectstatic --force dist
+```
+
+The `dist` folder contains the generated .html files and the collected statics.
+You can now `rsync` it to your webserver or whatever.

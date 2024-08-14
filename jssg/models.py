@@ -16,11 +16,10 @@
 import datetime
 from io import StringIO
 from pathlib import Path
-from typing import Iterator, Mapping, Optional
+from typing import Iterator, Mapping
 
 import markdown2
 from django.apps import AppConfig, apps
-from django.conf import settings
 from django.template import Context, Template
 from django.utils.text import slugify
 
