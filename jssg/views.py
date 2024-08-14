@@ -16,6 +16,7 @@
 
 from typing import Any
 
+from django.conf import settings
 from django.contrib.syndication.views import Feed
 from django.db.models.base import Model as Model
 from django.db.models.query import QuerySet
@@ -27,9 +28,9 @@ from jssg.models import Page, Post
 
 
 class PostFeedsView(Feed):
-    title = "jtremesay.org - last articles"
-    link = "https://jtremesay.org/atom.xml"
-    feed_link = "https://jtremesay.org/atom.xml"
+    title = settings.JSSG_RSS_TITLE
+    link = settings.JSSG_RSS_LINK + "/atom.xml"
+    feed_link = link
     feed_type = Atom1Feed
 
     def items(self) -> list[Post]:
@@ -44,7 +45,7 @@ class PostFeedsView(Feed):
         return item.content_md
 
     def item_link(self, post: Post) -> str:
-        return "https://jtremesay.org/" + reverse("post", args=(post.slug,))
+        return settings.JSSG_RSS_LINK + reverse("post", args=(post.slug,))
 
     def item_pubdate(self, post: Post) -> str:
         return post.timestamp
