@@ -58,10 +58,14 @@ INSTALLED_APPS = [
 3. Update `proj/urls.py`:
 
 ```python
+from jssg.utils import jssg_urls
+
 urlpatterns = [
-    # TODO
-    ...,
+    # ...
 ]
+
+# Automatically declare urls for pages, posts and rss feed
+urlpatterns += jssg_urls()
 ```
 
 ## Configuration
