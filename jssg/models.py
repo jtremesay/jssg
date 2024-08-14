@@ -19,6 +19,7 @@ from pathlib import Path
 from typing import Iterator, Mapping, Optional
 
 import markdown2
+from django.apps import AppConfig, apps
 from django.conf import settings
 from django.template import Context, Template
 from django.utils.text import slugify
@@ -31,9 +32,6 @@ class Document:
 
     This is a base class for more specialized document types
     """
-
-    # Default dir to search document
-    BASE_DIR = settings.JSSG_CONTENT_DIR
 
     def __init__(self, content: str, **metadata: Mapping[str, str]) -> None:
         """Create a new document.
@@ -59,7 +57,9 @@ class Document:
                 Context(
                     {
                         "posts": sorted(
-                            Post.load_glob(), key=lambda p: p.timestamp, reverse=True
+                            Post.load_posts_from_apps(),
+                            key=lambda p: p.timestamp,
+                            reverse=True,
                         )
                     }
                 )
@@ -121,28 +121,23 @@ class Document:
         return cls(content=content.getvalue(), **metadata)
 
     @classmethod
-    def load_glob(
-        cls, path: Optional[Path] = None, glob: str = "*.md"
-    ) -> Iterator["Document"]:
-        """Load multiple document.
+    def load_from_path(cls, path: Path) -> Iterator["Document"]:
+        for doc_path in path.glob("*.md"):
+            yield cls.load(doc_path)
 
-        :param path: The base path
-        :param glob: The glob pattern
-        :return: The documents that match the pattern
-        """
-        if path is None:
-            path = cls.BASE_DIR
+    @classmethod
+    def load_from_app(cls, app: AppConfig, sub_path: Path) -> Iterator["Document"]:
+        path = Path(app.path) / "content" / sub_path
+        yield from cls.load_from_path(path)
 
-        if path is None:
-            raise RuntimeError("No path and no self.BASE_DIR defined")
-
-        return map(cls.load, path.glob(glob))
+    @classmethod
+    def load_from_apps(cls, sub_path: Path) -> Iterator["Document"]:
+        for app in apps.get_app_configs():
+            yield from cls.load_from_app(app, sub_path)
 
 
 class Page(Document):
     """A webpage, with a title and some content."""
-
-    BASE_DIR = settings.JSSG_PAGES_DIR
 
     def __init__(self, content: str, **metadata) -> None:
         """Create a new page.
@@ -159,20 +154,15 @@ class Page(Document):
 
     @classmethod
     def load_page_with_slug(cls, slug: str) -> "Page":
-        return next(filter(lambda p: p.slug == slug, cls.load_glob()))
+        return next(filter(lambda p: p.slug == slug, cls.load_pages_from_apps()))
 
     @classmethod
-    def load_glob(
-        cls, path: Optional[Path] = None, glob: str = "*.md"
-    ) -> Iterator["Page"]:
-        """Overridden only to make the static typing happy."""
-        return super().load_glob(path, glob)
+    def load_pages_from_apps(cls) -> Iterator["Page"]:
+        yield from cls.load_from_apps("pages")
 
 
 class Post(Page):
     """A webblog post."""
-
-    BASE_DIR = settings.JSSG_POSTS_DIR
 
     def __init__(self, content: str, **metadata) -> None:
         """Create a new post.
@@ -184,8 +174,9 @@ class Post(Page):
         self.timestamp = datetime.datetime.fromisoformat(metadata["date"])
 
     @classmethod
-    def load_glob(
-        cls, path: Optional[Path] = None, glob: str = "*.md"
-    ) -> Iterator["Post"]:
-        """Overridden only to make the static typing happy."""
-        return super().load_glob(path, glob)
+    def load_posts_from_apps(cls) -> Iterator["Post"]:
+        yield from cls.load_from_apps("posts")
+
+    @classmethod
+    def load_post_with_slug(cls, slug: str) -> "Page":
+        return next(filter(lambda p: p.slug == slug, cls.load_posts_from_apps()))

@@ -33,7 +33,9 @@ class PostFeedsView(Feed):
     feed_type = Atom1Feed
 
     def items(self) -> list[Post]:
-        return sorted(Post.load_glob(), key=lambda p: p.timestamp, reverse=True)[:20]
+        return sorted(
+            Post.load_posts_from_apps(), key=lambda p: p.timestamp, reverse=True
+        )[:20]
 
     def item_title(self, post: Post) -> str:
         return post.title
@@ -68,3 +70,6 @@ class IndexView(PageView):
 class PostView(PageView):
     model = Post
     template_name = "post.html"
+
+    def get_object(self, queryset: QuerySet[Any] | None = None) -> Model:
+        return self.model.load_post_with_slug(self.kwargs["slug"])

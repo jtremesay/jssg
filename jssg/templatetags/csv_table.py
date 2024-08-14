@@ -18,9 +18,9 @@ from io import StringIO
 from pathlib import Path
 
 from django import template
-from django.contrib.staticfiles.storage import staticfiles_storage
 
 register = template.Library()
+from django.contrib.staticfiles.finders import find
 
 
 @register.simple_tag
@@ -32,7 +32,7 @@ def csv_table(csv_file: str) -> str:
     :param csv_file: path to a csv file stored in static files
     :return: the markdown table
     """
-    with Path(staticfiles_storage.path(csv_file)).open() as f:
+    with Path(find(csv_file)).open() as f:
         r = csv_reader(f)
         builder = StringIO()
         builder.write("\n")
