@@ -81,8 +81,7 @@ You need to set the following variables in your `settings.py`:
 Just put your md files in `yourapp/content/posts` and `yourapp/content/pages` 
 and JSSG will autodiscover them.
 
-You have full access to the django template engine in the markdown, have fun!
-
+The content of the file is processed by the django template engine before being rendered as markdown. So you can use the full power of the [template language](https://docs.djangoproject.com/en/5.1/ref/templates/language/).
 
 ### Page
 
@@ -93,7 +92,6 @@ Ex:
 title: Hello, world!
 slug: index
 ---
-
 ## bla bla bla
 
 bla bla bla
@@ -108,13 +106,33 @@ Ex:
 title: Hello, world
 date: 2023-05-31T20:00+02:00
 ---
-
 bla bla bla
+```
+
+### A page with django templating!
+
+```markdown
+---
+title: Hello, world!
+---
+{% load static %}
+
+An image:
+![A cat]({% static 'yourapp/images/cat.jpg' %})
+
+A js app:
+<div id="myjsapp"></div>
+<script src="{% static 'yourapp/js/myjsapp.js' %}">
+
+A table generated from a csv:
+{% csv_table 'yourapp/files/data.csv' %}
 ```
 
 ## Templating
 
 You need to provide the `page.html` and `post.html` template. 
+
+In the template, you will have access to the `object` variable that is the instance of the `Page` or `Post` model.
 
 Ex:
 
@@ -138,7 +156,7 @@ django project
 
 ### Generate site
 
-When your are api with your site, you can generate the static version with 
+When your are happy with your site, you can generate the static version with 
 distill:
 
 ```shell
